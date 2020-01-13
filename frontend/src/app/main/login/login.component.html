@@ -1,0 +1,26 @@
+<div style="margin-left: 200px;">
+
+<h3>{{ 'login.title' | translate }}</h3>
+
+
+<form [formGroup]="loginForm">
+
+    <mat-form-field>
+        <input matInput formControlName="username" placeholder="{{ 'login.username' | translate }}" type="text" required>
+    </mat-form-field>
+<br />
+    <mat-form-field>
+        <input matInput formControlName="password" placeholder="{{ 'login.password' | translate }}" type="text" required>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="rememberMe">{{ 'login.rememberMe' | translate }}</mat-checkbox>
+
+</form>
+
+<p>{{ 'login.forgot' | translate }}</p>
+
+<button mat-raised-button (click)="login()">{{ 'login.login' | translate }}</button>
+
+
+
+</div>
