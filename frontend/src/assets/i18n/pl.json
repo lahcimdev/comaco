@@ -1,11 +1,26 @@
 {
+    "main": {
+        "language": "PL",
+        "profile": "Mój profil",
+        "logout": "Wyloguj"
+    },
+
+    "navigation": {
+        "dashboard": "Pulpit"
+    },
+
     "login": {
         "title": "ZALOGUJ SIĘ DO SERWISU",
         "username": "Użytkownik",
         "password": "Hasło",
         "rememberMe": "Zapamiętaj mnie",
         "login": "Zaloguj",
-        "forgot": "Zapomniałeś hasła?"
+        "forgot": "Zapomniałeś hasła?",
+        "errorMessages": {
+            "requiredUsername": "Podaj nazwę użytkownika",
+            "requiredPassword": "Podaj swoje hasło",
+            "formLoginValidation": "Wypełnij wszystkie wymagane pola"
+        }
         
     }
 }

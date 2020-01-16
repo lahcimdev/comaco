@@ -1,11 +1,26 @@
 {
+    "main": {
+        "language": "EN",
+        "profile": "My profile",
+        "logout": "Logout"
+    },
+
+    "navigation": {
+        "dashboard": "Dashboard"
+    },
+    
     "login": {
         "title": "LOGIN TO YOUR ACCOUNT",
         "username": "Username",
         "password": "Password",
         "rememberMe": "Remember Me",
         "login": "Login",
-        "forgot": "Forgot your password?"
+        "forgot": "Forgot your password?",
+        "errorMessages": {
+            "requiredUsername": "Enter your username",
+            "requiredPassword": "Enter your password",
+            "formLoginValidation": "Enter all required fields"
+        }
         
     }
 }

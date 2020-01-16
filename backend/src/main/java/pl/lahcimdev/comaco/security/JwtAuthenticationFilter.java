@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
-
     private JwtTokenService jwtTokenService = new JwtTokenService();
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {

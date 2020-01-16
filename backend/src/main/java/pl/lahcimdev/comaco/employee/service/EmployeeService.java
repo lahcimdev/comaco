@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import pl.lahcimdev.comaco.employee.domain.Employee;
 import pl.lahcimdev.comaco.employee.repository.EmployeeRepository;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class EmployeeService {
 
@@ -26,6 +28,8 @@ public class EmployeeService {
 
     public Employee getAuthenticatedEmployee() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return employeeRepository.findByUsername(username);
+        return employeeRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException("Not found Employee with username: " + username)
+        );
     }
 }

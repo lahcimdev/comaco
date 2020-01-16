@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -11,15 +12,18 @@ import java.util.Date;
 @Service
 public class JwtTokenService {
 
-    final int tokenExpirationTime = 5 * 60 * 1000; // 5 minutes
+    @Value("${tokenExpirationInMinutes:10}")
+    private int tokenExpirationInMinutes;
+
+    final int tokenExpirationTime = 2 * 60 * 1000;
     final String tokenKey = "ut1FfO9sSPjG1OKxVh";
 
     public String generateToken(String username, Claims claims) {
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setSubject(username)
                 .setClaims(claims)
-                .setExpiration(new Date((System.currentTimeMillis() + tokenExpirationTime)))
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationTime))
                 .signWith(SignatureAlgorithm.HS512, tokenKey)
                 .compact();
     }
@@ -39,7 +43,7 @@ public class JwtTokenService {
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setClaims(claims)
-                .setExpiration(new Date((System.currentTimeMillis() + tokenExpirationTime)))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationTime))
                 .signWith(SignatureAlgorithm.HS512, tokenKey)
                 .compact();
     }

@@ -1,0 +1,51 @@
+<mat-toolbar>
+
+<p>Header</p>
+
+    <span style="flex: 1 1 auto;"></span>
+
+    <!--  ACCOUNT MENU -->
+    <ng-container *ngIf="authenticatedUser$ | async as authenticatedUser">
+        <button mat-button [matMenuTriggerFor]="userMenu">
+            <div>
+                <span *ngIf="authenticatedUser.userType == 'EMPLOYEE'">{{authenticatedUser.firstName + ' ' + authenticatedUser.lastName}}</span>
+                <span *ngIf="authenticatedUser.userType == 'CUSTOMER'">{{authenticatedUser.username}}</span>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </div>
+        </button>
+        <mat-menu #userMenu="matMenu" overlapTrigger="false">
+            <button *ngIf="authenticatedUser.userType == 'EMPLOYEE'" mat-menu-item routerLink="account-employee">
+                <mat-icon>account_circle</mat-icon>
+                <span>{{ 'main.profile' | translate }}</span>
+            </button>
+            <button *ngIf="authenticatedUser.userType == 'CUSTOMER'" mat-menu-item routerLink="account-customer">
+                <mat-icon>account_circle</mat-icon>
+                <span>{{ 'main.profile' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>{{ 'main.logout' | translate }}</span>
+            </button>
+        </mat-menu>
+    </ng-container>
+
+    <!-- SEPARATOR -->
+    <div style="height: 64px; width: 1px; background: rgba(0,0,0,.12);"></div>
+
+    <!--  LANGUAGE CHANGE -->
+    <button mat-button [matMenuTriggerFor]="languageMenu">
+        <mat-icon svgIcon="{{translateService.currentLang}}"></mat-icon>
+        {{ 'main.language' | translate }}
+    </button>
+    <mat-menu #languageMenu="matMenu" overlapTrigger="false">
+        <button mat-menu-item value="pl" (click)="changeLanguage('pl')">
+            <mat-icon svgIcon="pl"></mat-icon>
+            PL
+        </button>
+        <button mat-menu-item value="en" (click)="changeLanguage('en')">
+            <mat-icon svgIcon="en"></mat-icon>
+            EN
+        </button>
+    </mat-menu>
+
+</mat-toolbar>

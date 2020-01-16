@@ -1,3 +1,4 @@
+import { NavigationComponent } from './main/navigation/navigation.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
@@ -8,11 +9,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material.module';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { LoginComponent } from './main/login/login.component';
+import { UserState } from './state/user.state';
+import { TokenInterceptor } from './service/interceptors/token-interceptor';
+import { HeaderComponent } from './main/header/header.component';
+import { IconImport } from './service/iconImport';
+import { FooterComponent } from './main/footer/footer.component';
+import { CustomerModule } from './customer/customer.module';
+import { EmployeeModule } from './employee/employee.module';
+
 
 
 // import Cookies from 'js-cookie'
@@ -20,6 +29,9 @@ import { LoginComponent } from './main/login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    NavigationComponent,
     LoginComponent
   ],
   imports: [
@@ -27,8 +39,12 @@ import { LoginComponent } from './main/login/login.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+
+    EmployeeModule,
+    CustomerModule,
+
     HttpClientModule,
-    NgxsModule.forRoot([]),
+    NgxsModule.forRoot([UserState]),
     NgxsRouterPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     TranslateModule.forRoot({
@@ -41,7 +57,13 @@ import { LoginComponent } from './main/login/login.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [IconImport,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
