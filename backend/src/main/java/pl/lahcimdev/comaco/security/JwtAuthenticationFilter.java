@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
-    private JwtTokenService jwtTokenService = new JwtTokenService();
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -51,12 +50,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .collect(Collectors.toList());
         claims.put("authorities", authorities);
 
-        String token = jwtTokenService.generateToken(username, claims);
+        String token = JwtTokenService.generateToken(username, claims);
+        int tokenExpirationTime = JwtTokenService.getTokenExpirationTime();
 
         responseBody.put("token", token);
+        responseBody.put("expirationTime", tokenExpirationTime);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getWriter(), responseBody);
-
-
     }
 }

@@ -1,14 +1,20 @@
 <mat-toolbar>
 
-<p>Header</p>
+    <p>Header</p>
 
     <span style="flex: 1 1 auto;"></span>
 
-    <!--  ACCOUNT MENU -->
     <ng-container *ngIf="authenticatedUser$ | async as authenticatedUser">
+
+        <!--  TOKEN COUNTDOWN -->
+        <countdown #cd *ngIf="authenticatedUser.userType == 'EMPLOYEE'" [config]="tokenCountdown"></countdown>
+        <button *ngIf="authenticatedUser.userType == 'EMPLOYEE'" mat-button (click)="refreshToken()">Refresh</button>
+
+        <!--  ACCOUNT MENU -->
         <button mat-button [matMenuTriggerFor]="userMenu">
             <div>
-                <span *ngIf="authenticatedUser.userType == 'EMPLOYEE'">{{authenticatedUser.firstName + ' ' + authenticatedUser.lastName}}</span>
+                <span
+                    *ngIf="authenticatedUser.userType == 'EMPLOYEE'">{{authenticatedUser.firstName + ' ' + authenticatedUser.lastName}}</span>
                 <span *ngIf="authenticatedUser.userType == 'CUSTOMER'">{{authenticatedUser.username}}</span>
                 <mat-icon>keyboard_arrow_down</mat-icon>
             </div>

@@ -3,8 +3,8 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse } fr
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { map } from 'rxjs/operators';
-import { UserState } from 'src/app/state/user.state';
-import { UpdateTokenAction } from 'src/app/state/user.actions';
+import { UserState } from 'src/app/state/user/user.state';
+import { UpdateUserStateAction } from 'src/app/state/user/user.actions';
 
 
 
@@ -21,7 +21,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
         return next.handle(request).pipe(map(httpEvent => {
             if (httpEvent instanceof HttpResponse && httpEvent.headers.get('Authorization')) {
-                this.store.dispatch(new UpdateTokenAction(httpEvent.headers.get('Authorization')));
+                this.store.dispatch(new UpdateUserStateAction({ token: httpEvent.headers.get('Authorization') }));
             }
             return httpEvent;
         }));

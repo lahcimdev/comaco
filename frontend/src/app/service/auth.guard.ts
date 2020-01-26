@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { UserState } from '../state/user.state';
+import { UserState } from '../state/user/user.state';
 
 @Injectable({
   providedIn: 'root'

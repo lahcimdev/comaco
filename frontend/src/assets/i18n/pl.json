@@ -19,7 +19,8 @@
         "errorMessages": {
             "requiredUsername": "Podaj nazwę użytkownika",
             "requiredPassword": "Podaj swoje hasło",
-            "formLoginValidation": "Wypełnij wszystkie wymagane pola"
+            "formLoginValidation": "Wypełnij wszystkie wymagane pola",
+            "incorecsUsernamePassword": "Niepoprawne dane logowania"
         }
         
     }

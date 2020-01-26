@@ -17,6 +17,7 @@ import { AuthenticatedUserDto } from '../models/authenticated-user-dto';
 })
 class UserControllerService extends __BaseService {
   static readonly getAuthenticatedUserDtoUsingGETPath = '/api/user';
+  static readonly verifyTokenUsingGETPath = '/api/user/verifyToken';
 
   constructor(
     config: __Configuration,
@@ -55,6 +56,39 @@ class UserControllerService extends __BaseService {
   getAuthenticatedUserDtoUsingGET(): __Observable<AuthenticatedUserDto> {
     return this.getAuthenticatedUserDtoUsingGETResponse().pipe(
       __map(_r => _r.body as AuthenticatedUserDto)
+    );
+  }
+
+  /**
+   * @return OK
+   */
+  verifyTokenUsingGETResponse(): __Observable<__StrictHttpResponse<{[key: string]: number}>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/user/verifyToken`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<{[key: string]: number}>;
+      })
+    );
+  }
+  /**
+   * @return OK
+   */
+  verifyTokenUsingGET(): __Observable<{[key: string]: number}> {
+    return this.verifyTokenUsingGETResponse().pipe(
+      __map(_r => _r.body as {[key: string]: number})
     );
   }
 }

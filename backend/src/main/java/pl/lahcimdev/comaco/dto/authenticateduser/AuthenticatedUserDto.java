@@ -1,4 +1,4 @@
-package pl.lahcimdev.comaco.dto;
+package pl.lahcimdev.comaco.dto.authenticateduser;
 
 import pl.lahcimdev.comaco.user.domain.Role;
 import pl.lahcimdev.comaco.user.domain.UserType;

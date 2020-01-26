@@ -14,13 +14,15 @@ import { MaterialModule } from './material.module';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { LoginComponent } from './main/login/login.component';
-import { UserState } from './state/user.state';
+import { UserState } from './state/user/user.state';
 import { TokenInterceptor } from './service/interceptors/token-interceptor';
 import { HeaderComponent } from './main/header/header.component';
 import { IconImport } from './service/iconImport';
 import { FooterComponent } from './main/footer/footer.component';
 import { CustomerModule } from './customer/customer.module';
 import { EmployeeModule } from './employee/employee.module';
+import { AuthorizationErrorComponent } from './main/errors/authorization-error/authorization-error.component';
+import { CountdownModule } from 'ngx-countdown';
 
 
 
@@ -32,7 +34,8 @@ import { EmployeeModule } from './employee/employee.module';
     HeaderComponent,
     FooterComponent,
     NavigationComponent,
-    LoginComponent
+    LoginComponent,
+    AuthorizationErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +58,8 @@ import { EmployeeModule } from './employee/employee.module';
       }
     }),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CountdownModule
   ],
   providers: [IconImport,
     {

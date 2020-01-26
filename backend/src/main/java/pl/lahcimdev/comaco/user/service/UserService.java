@@ -3,13 +3,15 @@ package pl.lahcimdev.comaco.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import pl.lahcimdev.comaco.dto.AuthenticatedUserDto;
-import pl.lahcimdev.comaco.dto.AuthenticatedUserDtoMapper;
+import pl.lahcimdev.comaco.dto.authenticateduser.AuthenticatedUserDto;
+import pl.lahcimdev.comaco.dto.authenticateduser.AuthenticatedUserDtoMapper;
 import pl.lahcimdev.comaco.security.JwtTokenService;
 import pl.lahcimdev.comaco.user.domain.UserType;
 import pl.lahcimdev.comaco.user.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -37,7 +39,11 @@ public class UserService {
         if (userType == UserType.CUSTOMER) {
             return authenticatedUserDtoMapper.mapCustomerToAuthenticatedUserDto(username);
         }
-
         throw new EntityNotFoundException("User exist in database but has invalid type");
+    }
+
+    public Map<String, Integer> verifyToken() {
+        return Collections.singletonMap("expirationTime", JwtTokenService.getTokenExpirationTime());
+
     }
 }

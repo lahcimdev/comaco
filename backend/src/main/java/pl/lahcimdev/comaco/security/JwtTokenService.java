@@ -4,21 +4,27 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
+@ConfigurationProperties("security")
 public class JwtTokenService {
 
-    @Value("${tokenExpirationInMinutes:10}")
-    private int tokenExpirationInMinutes;
+    private static int tokenExpirationTime = 30 * 60 * 1000;
+    final static String tokenKey = "ut1FfO9sSPjG1OKxVh";
 
-    final int tokenExpirationTime = 2 * 60 * 1000;
-    final String tokenKey = "ut1FfO9sSPjG1OKxVh";
+    public void setTokenExpirationTime(int tokenExpirationTime) {
+        JwtTokenService.tokenExpirationTime = tokenExpirationTime;
+    }
 
-    public String generateToken(String username, Claims claims) {
+    public static int getTokenExpirationTime() {
+        return tokenExpirationTime;
+    }
+
+    public static String generateToken(String username, Claims claims) {
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setClaims(claims)
@@ -28,18 +34,16 @@ public class JwtTokenService {
                 .compact();
     }
 
-    public void verifyToken(String token) throws JwtException {
+    public static void verifyToken(String token) throws JwtException {
         Jwts.parser().setSigningKey(tokenKey).parse(token.substring(7));
     }
 
-    public Claims getClaimsFromToken(String token) {
+    public static Claims getClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(tokenKey).parseClaimsJws(token.substring(7)).getBody();
     }
 
-    public String updateExpirationDateToken(String token) {
-
+    public static String updateExpirationDateToken(String token) {
         Claims claims = getClaimsFromToken(token);
-
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setClaims(claims)

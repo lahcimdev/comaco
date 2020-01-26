@@ -6,15 +6,19 @@ import { AccountEmployeeComponent } from './account-employee/account-employee.co
 import { DashboardEmployeeComponent } from './dashboard-employee/dashboard-employee.component';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { EmployeeRoutingModule } from './employee-routing.module';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
 
 @NgModule({
   declarations: [
     NavigationEmployeeComponent,
     AccountEmployeeComponent,
-    DashboardEmployeeComponent
+    DashboardEmployeeComponent,
+    EmployeeListComponent
   ],
   imports: [
     CommonModule,
+    EmployeeRoutingModule,
     MaterialModule,
     RouterModule,
     TranslateModule

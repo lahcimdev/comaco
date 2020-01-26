@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
 
-    private JwtTokenService jwtTokenService = new JwtTokenService();
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -20,7 +18,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String newToken = jwtTokenService.updateExpirationDateToken(token);
+        String newToken = JwtTokenService.updateExpirationDateToken(token);
 
         response.setHeader("Authorization", newToken);
         response.setHeader("Access-control-expose-headers", "Authorization");

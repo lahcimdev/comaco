@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Store } from '@ngxs/store';
-import { LoginAction } from 'src/app/state/user.actions';
-import { tap, map } from 'rxjs/operators';
+import { Store, Select } from '@ngxs/store';
+import { LoginAction, UpdateUserStateAction } from 'src/app/state/user/user.actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -13,9 +13,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   
   loginForm: FormGroup;
   showPassword: boolean = false;
-  errorMessage: string = null;
 
   constructor(private formBuilder: FormBuilder, private store: Store) { }
+
+  @Select(state => state.user.errorMessage)
+  errorMessage$: Observable<string>;
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -26,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.errorMessage = null;
+    this.store.dispatch(new UpdateUserStateAction({ errorMessage: null }));
   }
 
   login() {
@@ -35,7 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loginForm.get('username').value,
         this.loginForm.get('password').value));
     } else {
-      this.errorMessage = 'login.errorMessages.formLoginValidation';
+      this.store.dispatch(new UpdateUserStateAction({ errorMessage: 'login.errorMessages.formLoginValidation' }));   
     }
 
   }

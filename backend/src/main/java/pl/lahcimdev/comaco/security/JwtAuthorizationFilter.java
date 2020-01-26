@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private JwtTokenService jwtTokenService = new JwtTokenService();
-
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -40,7 +38,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         try {
-            jwtTokenService.verifyToken(token);
+            JwtTokenService.verifyToken(token);
         } catch (JwtException e) {
             SecurityContextHolder.getContext().setAuthentication(null);
             response.setStatus(401);
@@ -49,7 +47,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        Claims claims = jwtTokenService.getClaimsFromToken(token);
+        Claims claims = JwtTokenService.getClaimsFromToken(token);
 
         List<String> authorities = claims.get("authorities", ArrayList.class);
 

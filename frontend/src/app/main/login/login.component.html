@@ -14,7 +14,7 @@
     </mat-form-field>
 
     <mat-form-field>
-        <input #password matInput formControlName="password" placeholder="{{ 'login.password' | translate }}" [type]="showPassword? 'text' : 'password'" required>
+        <input #password (keyup.enter)="login()" matInput formControlName="password" placeholder="{{ 'login.password' | translate }}" [type]="showPassword? 'text' : 'password'" required>
         <mat-icon matSuffix (click)="showPassword = !showPassword">{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
         <mat-hint align="end">{{ password.value.length }}</mat-hint>
         <mat-error *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">{{ 'login.errorMessages.requiredPassword' | translate }}</mat-error>
@@ -26,10 +26,8 @@
 
 <p>{{ 'login.forgot' | translate }}</p>
 
-<p *ngIf="errorMessage">{{ errorMessage | translate }}</p>
+<p *ngIf="errorMessage$ | async as errorMessage">{{ errorMessage | translate }}</p>
 
 <button mat-raised-button (click)="login()">{{ 'login.login' | translate }}</button>
-
-
 
 </div>

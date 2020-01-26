@@ -1,4 +1,4 @@
-package pl.lahcimdev.comaco.dto;
+package pl.lahcimdev.comaco.dto.authenticateduser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +13,6 @@ public class AuthenticatedUserDtoMapper {
     private EmployeeRepository employeeRepository;
     private CustomerRepository customerRepository;
 
-    AuthenticatedUserDto authenticatedUserDto = new AuthenticatedUserDto();
-
     @Autowired
     public AuthenticatedUserDtoMapper(EmployeeRepository employeeRepository, CustomerRepository customerRepository) {
         this.employeeRepository = employeeRepository;
@@ -22,7 +20,7 @@ public class AuthenticatedUserDtoMapper {
     }
 
     public AuthenticatedUserDto mapEmployeeToAuthenticatedUserDto(String username) {
-
+        AuthenticatedUserDto authenticatedUserDto = new AuthenticatedUserDto();
         return employeeRepository.findByUsername(username).map(
                 employee -> {
                     authenticatedUserDto.setUsername(employee.getUsername());
@@ -32,12 +30,12 @@ public class AuthenticatedUserDtoMapper {
                     authenticatedUserDto.setLastName(employee.getLastName());
                     return authenticatedUserDto;
                 }).orElseThrow(
-                () -> new EntityNotFoundException("Error")
+                () -> new EntityNotFoundException("User doesn't exist in database")
         );
     }
 
     public AuthenticatedUserDto mapCustomerToAuthenticatedUserDto(String username) {
-
+        AuthenticatedUserDto authenticatedUserDto = new AuthenticatedUserDto();
         return customerRepository.findByUsername(username).map(
                 customer -> {
                     authenticatedUserDto.setUsername(customer.getUsername());
@@ -45,7 +43,7 @@ public class AuthenticatedUserDtoMapper {
                     authenticatedUserDto.setRoles(customer.getRoles());
                     return authenticatedUserDto;
                 }).orElseThrow(
-                () -> new EntityNotFoundException("Error")
+                () -> new EntityNotFoundException("User doesn't exist in database")
         );
     }
 
