@@ -8,6 +8,7 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { AuthenticatedUserDto } from '../models/authenticated-user-dto';
+import { Role } from '../models/role';
 
 /**
  * User Controller
@@ -17,7 +18,9 @@ import { AuthenticatedUserDto } from '../models/authenticated-user-dto';
 })
 class UserControllerService extends __BaseService {
   static readonly getAuthenticatedUserDtoUsingGETPath = '/api/user';
-  static readonly verifyTokenUsingGETPath = '/api/user/verifyToken';
+  static readonly getAllRolesUsingGETPath = '/api/user/roles';
+  static readonly getTokenExpirationTimeUsingGETPath = '/api/user/token-expiration-time';
+  static readonly verifyTokenUsingGETPath = '/api/user/verify-token';
 
   constructor(
     config: __Configuration,
@@ -62,13 +65,13 @@ class UserControllerService extends __BaseService {
   /**
    * @return OK
    */
-  verifyTokenUsingGETResponse(): __Observable<__StrictHttpResponse<{[key: string]: number}>> {
+  getAllRolesUsingGETResponse(): __Observable<__StrictHttpResponse<Array<Role>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/user/verifyToken`,
+      this.rootUrl + `/api/user/roles`,
       __body,
       {
         headers: __headers,
@@ -79,16 +82,74 @@ class UserControllerService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{[key: string]: number}>;
+        return _r as __StrictHttpResponse<Array<Role>>;
       })
     );
   }
   /**
    * @return OK
    */
-  verifyTokenUsingGET(): __Observable<{[key: string]: number}> {
+  getAllRolesUsingGET(): __Observable<Array<Role>> {
+    return this.getAllRolesUsingGETResponse().pipe(
+      __map(_r => _r.body as Array<Role>)
+    );
+  }
+
+  /**
+   * @return OK
+   */
+  getTokenExpirationTimeUsingGETResponse(): __Observable<__StrictHttpResponse<number>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/user/token-expiration-time`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return (_r as HttpResponse<any>).clone({ body: parseFloat((_r as HttpResponse<any>).body as string) }) as __StrictHttpResponse<number>
+      })
+    );
+  }
+  /**
+   * @return OK
+   */
+  getTokenExpirationTimeUsingGET(): __Observable<number> {
+    return this.getTokenExpirationTimeUsingGETResponse().pipe(
+      __map(_r => _r.body as number)
+    );
+  }
+  verifyTokenUsingGETResponse(): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/user/verify-token`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }  verifyTokenUsingGET(): __Observable<null> {
     return this.verifyTokenUsingGETResponse().pipe(
-      __map(_r => _r.body as {[key: string]: number})
+      __map(_r => _r.body as null)
     );
   }
 }

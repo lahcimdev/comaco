@@ -1,24 +1,38 @@
 package pl.lahcimdev.comaco.user.domain;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@EntityListeners({AuditingEntityListener.class})
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     @NotNull
+    @Column(unique = true)
     protected String username;
     @NotNull
     protected String password;
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     protected List<Role> roles;
     @Enumerated(value = EnumType.STRING)
     protected UserType userType;
+    @CreatedDate
+    private LocalDateTime createdDate;
+    @CreatedBy
+    private String createdBy;
 
     public User() {
     }
@@ -61,5 +75,21 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

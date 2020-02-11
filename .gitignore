@@ -10,6 +10,8 @@ mvnw.cmd
 *.iml
 *.ipr
 
+# data files directory
+/data
 
 ### VS Code ###
 .vscode/

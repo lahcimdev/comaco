@@ -1,45 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-
-
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
-
-
-
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { GetBasicEmployeeDtoPageAction } from 'src/app/state/employee/employee.actions';
+import { PageBasicEmployeeDto } from 'src/api/models';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatInput } from '@angular/material/input';
+import { expandableRowAnimation } from './expandable-row.animation';
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
-  styles: ['./employee-list.component.css']
+  styles: ['./employee-list.component.css'],
+  animations: [expandableRowAnimation]
 })
 export class EmployeeListComponent implements OnInit {
 
-  public displayedColumns: string[] = ['ID', 'Imię', 'Nazwisko', 'Stanowisko'];
-  dataSource = ELEMENT_DATA;
+  @ViewChild(MatPaginator, { static: false })
+  private matPaginator: MatPaginator;
+  @ViewChild(MatSort, { static: false })
+  private matSort: MatSort;
+  @ViewChild(MatInput, { static: false })
+  private filter: MatInput;
 
-  constructor() { }
+  private displayedColumns: string[] = ['id', 'firstName', 'lastName', 'employeeType', 'button'];
+  private expandedSymbol: string = '';
+
+  constructor(private store: Store) { }
+
+  @Select(state => state.employee.basicEmployeeDtoPage)
+  basicEmployeeDtoPage$: Observable<PageBasicEmployeeDto>;
 
   ngOnInit() {
+    this.store.dispatch(new GetBasicEmployeeDtoPageAction(0, 10));
   }
 
-  
+  refreshList() {
+    this.store.dispatch(new GetBasicEmployeeDtoPageAction(this.matPaginator.pageIndex, this.matPaginator.pageSize, this.matSort.direction=='desc'?'DESC':'ASC', Array.of(this.matSort.active), this.filter.value));
+  }
+
+  toggleExpandableSymbol(id: any): void {
+    if (this.expandedSymbol === id) {
+      this.expandedSymbol = ''
+    } else {
+      this.expandedSymbol = id;
+    }
+  }
+
 
 }

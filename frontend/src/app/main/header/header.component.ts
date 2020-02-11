@@ -14,10 +14,12 @@ import { CountdownConfig, CountdownComponent } from 'ngx-countdown';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  @ViewChild('cd', { static: false }) private countdown: CountdownComponent;
+  @ViewChild(CountdownComponent, { static: false }) 
+  private countdown: CountdownComponent;
 
   private tokenCountdown: CountdownConfig;
   private tokenSubscription: Subscription;
+  private tokenExpirationTimeSubscription: Subscription;
 
   constructor(private translateService: TranslateService, private store: Store) { }
 
@@ -27,20 +29,33 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Select(state => state.user.token)
   token$: Observable<string>;
 
+  @Select(state => state.user.tokenExpirationTime)
+  tokenExpirationTime$: Observable<number>;
+
   ngOnInit() {
     this.tokenCountdown = {
       format: 'm:ss',
-      leftTime: 10*60
+      leftTime: 2*60,
+      notify: [9]
     }
     this.tokenSubscription = this.token$.subscribe(token => {
-      if (this.countdown) {
+      if (this.countdown && token) {
         this.countdown.restart();
+      }
+    })
+    this.tokenExpirationTimeSubscription = this.tokenExpirationTime$.subscribe(tokenExpirationTime => {
+      if (tokenExpirationTime) {
+        this.tokenCountdown = {
+          format: 'm:ss',
+          leftTime: tokenExpirationTime/1000,
+        }
       }
     })
   }
 
   ngOnDestroy(): void {
     this.tokenSubscription.unsubscribe();
+    this.tokenExpirationTimeSubscription.unsubscribe();
   }
 
   refreshToken() {
@@ -54,6 +69,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   changeLanguage(language: string) {
     this.translateService.use(language);
   }
+
+  countdownEvent(event) { 
+    if (event.action == 'done') {
+      this.store.dispatch(new LogoutAction());
+    }
+    
+  }
+
 
 
 }

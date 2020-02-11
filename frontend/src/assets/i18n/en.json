@@ -4,11 +4,9 @@
         "profile": "My profile",
         "logout": "Logout"
     },
-
     "navigation": {
         "dashboard": "Dashboard"
     },
-    
     "login": {
         "title": "LOGIN TO YOUR ACCOUNT",
         "username": "Username",
@@ -22,6 +20,52 @@
             "formLoginValidation": "Enter all required fields",
             "incorecsUsernamePassword": "Incorect username or password"
         }
-        
+    },
+    "employee": {
+        "id": "Id",
+        "username": "Username",
+        "password": "Password",
+        "roles": "Roles",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "employeeType": "Employee Type",
+        "email": "E-mail",
+        "phone": "Phone number",
+        "birthDate": " Date of birth",
+        "sex": "Sex",
+        "sexType": {
+            "male": "Male",
+            "female": "Female"
+        },
+        "address": {
+            "addressType": {
+                "main": "Main",
+                "additional": "Additional"
+            },
+            "street": "Street",
+            "city": "City",
+            "postalCode": "Postal Code",
+            "description": "Description"
+        }
+    },
+    "create-employee": {
+        "photo": {
+            "addPhoto": "Add Photo",
+            "changePhoto": "Change Photo",
+            "deletePhoto": "Delete Photo"
+        },
+        "address": {
+            "addAddress": "Add Address",
+            "deleteAddress": "Delete Address"
+        },
+        "createEmployee": "Create Employee",
+        "errorMessages": {
+            "requiredEmployee": "Fill all required fields",
+            "requiredAddress": "Fill all required fields"
+        }
+    },
+    "user-photo": {
+        "ok": "Confirm",
+        "cancel": "Cancel"
     }
 }

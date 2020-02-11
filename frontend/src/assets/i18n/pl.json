@@ -22,6 +22,53 @@
             "formLoginValidation": "Wypełnij wszystkie wymagane pola",
             "incorecsUsernamePassword": "Niepoprawne dane logowania"
         }
-        
+    },
+    "employee": {
+        "id": "Id",
+        "username": "Uzytkownik",
+        "password": "Hasło",
+        "roles": "Uprawnienia",
+        "firstName": "Imię",
+        "lastName": "Nazwisko",
+        "employeeType": "Stanowisko",
+        "email": "E-mail",
+        "phone": "Telefon kontaktowy",
+        "birthDate": "Data urodzenia",
+        "sex": "Płeć",
+        "sexType": {
+            "male": "Mężczyzna",
+            "female": "Kobieta"
+        },
+        "address": {
+            "addressType": {
+                "main": "Główny",
+                "additional": "Dodatkowy"
+            },
+            "street": "Ulica",
+            "city": "Miasto",
+            "postalCode": "Kod pocztowy",
+            "description": "Opis"
+        }
+    },
+    "create-employee": {
+        "photo": {
+            "addPhoto": "Dodaj zdjęcie",
+            "changePhoto": "Zmień zdjęcie",
+            "deletePhoto": "Usuń zdjęcie"
+        },
+        "address": {
+            "addAddress": "Dodaj adres",
+            "deleteAddress": "Usuń adres"
+        },
+        "createEmployee": "Utwórz pracownika",
+        "errorMessages": {
+            "requiredEmployee": "Wypełnij wszystkie wymagane pola",
+            "requiredAddress": "Wypełnij wszystkie wymagane pola"
+        }
+    }
+    ,
+    "user-photo": {
+        "ok": "Zatwierdź",
+        "cancel": "Anuluj"
     }
 }

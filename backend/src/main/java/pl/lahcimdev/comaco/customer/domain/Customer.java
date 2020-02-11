@@ -8,9 +8,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Customer extends User {
 
-    private String customer;
 
-//    private String email;
+    private String email;
 
 //    private CompanyInfo companyInfo;
 

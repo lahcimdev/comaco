@@ -15,6 +15,7 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { LoginComponent } from './main/login/login.component';
 import { UserState } from './state/user/user.state';
+import { EmployeeState } from './state/employee/employee.state';
 import { TokenInterceptor } from './service/interceptors/token-interceptor';
 import { HeaderComponent } from './main/header/header.component';
 import { IconImport } from './service/iconImport';
@@ -23,10 +24,7 @@ import { CustomerModule } from './customer/customer.module';
 import { EmployeeModule } from './employee/employee.module';
 import { AuthorizationErrorComponent } from './main/errors/authorization-error/authorization-error.component';
 import { CountdownModule } from 'ngx-countdown';
-
-
-
-// import Cookies from 'js-cookie'
+import { ErrorInterceptor } from './service/interceptors/error-interceptor';
 
 @NgModule({
   declarations: [
@@ -47,7 +45,7 @@ import { CountdownModule } from 'ngx-countdown';
     CustomerModule,
 
     HttpClientModule,
-    NgxsModule.forRoot([UserState]),
+    NgxsModule.forRoot([UserState, EmployeeState]),
     NgxsRouterPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     TranslateModule.forRoot({
@@ -66,7 +64,7 @@ import { CountdownModule } from 'ngx-countdown';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    },
+    }
   ],
   bootstrap: [AppComponent]
 })

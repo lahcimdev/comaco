@@ -12,6 +12,7 @@ public class AuthenticatedUserDto {
     private List<Role> roles;
     private String firstName;
     private String lastName;
+    private String photo;
 
     public AuthenticatedUserDto() {
     }
@@ -56,4 +57,24 @@ public class AuthenticatedUserDto {
         this.lastName = lastName;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("AuthenticatedUserDto{");
+        sb.append("username='").append(username).append('\'');
+        sb.append(", userType=").append(userType);
+        sb.append(", roles=").append(roles);
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", photo='").append(photo).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

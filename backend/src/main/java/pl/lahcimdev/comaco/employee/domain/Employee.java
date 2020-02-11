@@ -1,5 +1,6 @@
 package pl.lahcimdev.comaco.employee.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -7,14 +8,12 @@ import pl.lahcimdev.comaco.user.domain.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@EntityListeners({AuditingEntityListener.class})
-//@Table(indexes = @Index(columnList = "lastName", name = "LASTNAME_INDEX"))
 public class Employee extends User {
-
-    private String employee;
 
     @Enumerated(EnumType.STRING)
     private EmployeeType employeeType;
@@ -29,34 +28,27 @@ public class Employee extends User {
 
     private String phone;
 
-    @ManyToOne
-    private Address address;
+    private LocalDate birthDate;
 
-    @CreatedDate
-    private LocalDateTime createdDate;
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
 
-    @CreatedBy
-    private Long createdBy;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Address> address;
 
-
-//    private String gender; enum
-
-//    private String pesel;
-
-//    private IdCard idCard; typ dokumentu np dowód o numerze i wydany przez
-
-//    private PaymentBill paymentBill (paski wypłat czy FV itd, osobna klasa w której jest ID usera czy jakies powiązanie)
+    private String photo;
 
 
     public Employee() {
     }
 
-    public String getEmployee() {
-        return employee;
+    public EmployeeType getEmployeeType() {
+        return employeeType;
     }
 
-    public void setEmployee(String employee) {
-        this.employee = employee;
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
     }
 
     public String getFirstName() {
@@ -91,37 +83,35 @@ public class Employee extends User {
         this.phone = phone;
     }
 
-    public Address getAddress() {
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    public List<Address> getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(List<Address> address) {
         this.address = address;
     }
 
-    public EmployeeType getEmployeeType() {
-        return employeeType;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setEmployeeType(EmployeeType employeeType) {
-        this.employeeType = employeeType;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Long getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
-    }
-
-
 }

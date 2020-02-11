@@ -8,6 +8,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table'
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card'; 
+import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material';
 
 const MaterialComponents = [
   MatInputModule,
@@ -18,7 +24,13 @@ const MaterialComponents = [
   MatToolbarModule,
   MatMenuModule,
   MatIconModule,
-  MatTableModule
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatCardModule,
+  MatSelectModule,
+  MatTabsModule,
+  MatDialogModule
 ]
 
 @NgModule({

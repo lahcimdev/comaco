@@ -5,6 +5,7 @@ import { Store } from '@ngxs/store';
 import { map } from 'rxjs/operators';
 import { UserState } from 'src/app/state/user/user.state';
 import { UpdateUserStateAction } from 'src/app/state/user/user.actions';
+import Cookies from 'js-cookie'
 
 
 
@@ -21,7 +22,9 @@ export class TokenInterceptor implements HttpInterceptor {
 
         return next.handle(request).pipe(map(httpEvent => {
             if (httpEvent instanceof HttpResponse && httpEvent.headers.get('Authorization')) {
-                this.store.dispatch(new UpdateUserStateAction({ token: httpEvent.headers.get('Authorization') }));
+                const newToken = httpEvent.headers.get('Authorization');
+                this.store.dispatch(new UpdateUserStateAction({ token: newToken }));
+                Cookies.set('token', newToken, { expires: 7 })
             }
             return httpEvent;
         }));

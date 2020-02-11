@@ -1,5 +1,11 @@
 <p>EMPLOYEE</p>
 
+<ng-container *ngIf="authenticatedUser$ | async as authenticatedUser">
+<p>{{ authenticatedUser.firstName + ' ' + authenticatedUser.firstName }}</p>
+    <img [src]="authenticatedUser.photo ? ('data:image/png;base64,' + authenticatedUser.photo) : ('./../../../assets/images/user_72x72.png')"
+        height="72px" width="72px" style="border-radius: 50%;" />
+</ng-container>
+
 <mat-nav-list>
     <a mat-list-item routerLink="dashboard-employee">
         <mat-icon>add_circle_outline</mat-icon> {{ 'navigation.dashboard' | translate }}
@@ -7,9 +13,10 @@
     <a mat-list-item routerLink="employee-list">
         <mat-icon>add_circle_outline</mat-icon> EMPLOYEE LIST
     </a>
+    <a mat-list-item routerLink="create-employee">
+        <mat-icon>add_circle_outline</mat-icon> ADD EMPLOYEE
+    </a>
     <a mat-list-item>
         <mat-icon>search</mat-icon> Logout
     </a>
 </mat-nav-list>
-
-

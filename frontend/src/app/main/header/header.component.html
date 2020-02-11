@@ -6,9 +6,9 @@
 
     <ng-container *ngIf="authenticatedUser$ | async as authenticatedUser">
 
-        <!--  TOKEN COUNTDOWN -->
-        <countdown #cd *ngIf="authenticatedUser.userType == 'EMPLOYEE'" [config]="tokenCountdown"></countdown>
-        <button *ngIf="authenticatedUser.userType == 'EMPLOYEE'" mat-button (click)="refreshToken()">Refresh</button>
+        <!-- AVATAR -->
+        <img [src]="authenticatedUser.photo ? ('data:image/png;base64,' + authenticatedUser.photo) : ('./../../../assets/images/user_72x72.png')"
+            height="48px" width="48px" style="border-radius: 50%;" />
 
         <!--  ACCOUNT MENU -->
         <button mat-button [matMenuTriggerFor]="userMenu">
@@ -33,6 +33,14 @@
                 <span>{{ 'main.logout' | translate }}</span>
             </button>
         </mat-menu>
+
+        <!--  TOKEN COUNTDOWN -->
+        <countdown *ngIf="authenticatedUser.userType == 'EMPLOYEE'" [config]="tokenCountdown"
+            (event)="countdownEvent($event)"></countdown>
+        <button *ngIf="authenticatedUser.userType == 'EMPLOYEE'" mat-icon-button (click)="refreshToken()">
+            <mat-icon>refresh</mat-icon>
+        </button>
+
     </ng-container>
 
     <!-- SEPARATOR -->

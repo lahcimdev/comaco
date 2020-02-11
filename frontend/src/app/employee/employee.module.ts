@@ -8,20 +8,33 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { CreateEmployeeComponent } from './create-employee/create-employee.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { UserPhotoComponent } from '../components/user-photo/user-photo.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+
 
 @NgModule({
   declarations: [
     NavigationEmployeeComponent,
     AccountEmployeeComponent,
     DashboardEmployeeComponent,
-    EmployeeListComponent
+    EmployeeListComponent,
+    CreateEmployeeComponent,
+    UserPhotoComponent
+  ],
+  entryComponents: [
+    UserPhotoComponent
   ],
   imports: [
     CommonModule,
     EmployeeRoutingModule,
     MaterialModule,
     RouterModule,
-    TranslateModule
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ImageCropperModule
   ],
   exports: [NavigationEmployeeComponent]
 })

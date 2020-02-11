@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.lahcimdev.comaco.customer.repository.CustomerRepository;
 import pl.lahcimdev.comaco.employee.repository.EmployeeRepository;
+import pl.lahcimdev.comaco.service.UserPhotoService;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -28,6 +29,7 @@ public class AuthenticatedUserDtoMapper {
                     authenticatedUserDto.setRoles(employee.getRoles());
                     authenticatedUserDto.setFirstName(employee.getFirstName());
                     authenticatedUserDto.setLastName(employee.getLastName());
+                    authenticatedUserDto.setPhoto(UserPhotoService.getPhoto(employee.getPhoto()));
                     return authenticatedUserDto;
                 }).orElseThrow(
                 () -> new EntityNotFoundException("User doesn't exist in database")

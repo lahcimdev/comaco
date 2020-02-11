@@ -2,18 +2,20 @@
 import { Address } from './address';
 import { Role } from './role';
 export interface Employee {
-  address?: Address;
-  createdBy?: number;
+  address?: Array<Address>;
+  birthDate?: string;
+  createdBy?: string;
   createdDate?: string;
   email?: string;
-  employee?: string;
   employeeType?: 'DIRECTOR' | 'MAIN_MANAGER' | 'MANAGER' | 'SALES_MANAGER' | 'IT_SPECIALIST';
   firstName?: string;
   id?: number;
   lastName?: string;
   password?: string;
   phone?: string;
+  photo?: string;
   roles?: Array<Role>;
+  sex?: 'MALE' | 'FEMALE';
   userType?: 'EMPLOYEE' | 'CUSTOMER';
   username?: string;
 }

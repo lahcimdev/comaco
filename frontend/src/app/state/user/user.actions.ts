@@ -1,4 +1,5 @@
 import { UserModel } from '../models/user.model';
+import { Employee } from 'src/api/models';
 
 export class UpdateUserStateAction {
   static readonly type = '[User] UpdateUserStateAction';
@@ -30,4 +31,13 @@ export class RefreshTokenAction {
   constructor() { }
 }
 
+export class GetAllRolesAction {
+  static readonly type = '[User] GetAllRolesAction';
+  constructor() { }
+}
+
+export class GetTokenExpirationTimeAction {
+  static readonly type = '[User] GetTokenExpirationTimeAction';
+  constructor() { }
+}
 

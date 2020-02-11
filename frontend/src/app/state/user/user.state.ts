@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { LoginAction, GetAuthenticatedUserAction, LogoutAction, UpdateUserStateAction, VerifyTokenAction, RefreshTokenAction } from './user.actions';
+import { LoginAction, GetAuthenticatedUserAction, LogoutAction, UpdateUserStateAction, VerifyTokenAction, RefreshTokenAction, GetAllRolesAction, GetTokenExpirationTimeAction } from './user.actions';
 import { tap, catchError } from 'rxjs/operators';
 import { UserControllerService } from 'src/api/services';
 import { empty } from 'rxjs';
-import { AuthenticatedUserDto } from 'src/api/models';
+import { AuthenticatedUserDto, Role } from 'src/api/models';
 import { Navigate } from '@ngxs/router-plugin';
 import Cookies from 'js-cookie'
 
@@ -12,18 +12,22 @@ import Cookies from 'js-cookie'
 export class UserStateModel {
 
   public token: string;
-  public tokenExpirtaionTime: number;
+  public tokenExpirationTime: number;
   public authenticatedUser: AuthenticatedUserDto;
   public errorMessage: string;
+
+  public roles: Array<Role>;
 }
 
 @State<UserStateModel>({
   name: 'user',
   defaults: {
     token: null,
-    tokenExpirtaionTime: null,
+    tokenExpirationTime: null,
     authenticatedUser: null,
-    errorMessage: null
+    errorMessage: null,
+
+    roles: null,
   }
 })
 export class UserState {
@@ -45,9 +49,9 @@ export class UserState {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    return this.httpClient.post<{ token: string, expirationTime: number }>('http://localhost:8080/login', formData, {}).pipe(
-      tap(({ token, expirationTime }) => {
-        ctx.patchState({ token: token, tokenExpirtaionTime: expirationTime / 60000 });
+    return this.httpClient.post<{ token: string }>('http://localhost:8080/login', formData, {}).pipe(
+      tap(({ token }) => {
+        ctx.patchState({ token: token });
         Cookies.set('token', token, { expires: 7 })
         ctx.dispatch(new GetAuthenticatedUserAction());
       }),
@@ -82,7 +86,7 @@ export class UserState {
 
   @Action(LogoutAction)
   logout(ctx: StateContext<UserStateModel>, { }: LogoutAction) {
-    ctx.patchState({ token: null, tokenExpirtaionTime: null, authenticatedUser: null });
+    ctx.patchState({ token: null, authenticatedUser: null });
     ctx.dispatch(new Navigate(["/login"]))
     Cookies.remove('token');
   }
@@ -91,15 +95,14 @@ export class UserState {
   verifyToken(ctx: StateContext<UserStateModel>, { }: VerifyTokenAction) {
       ctx.patchState({ token: Cookies.get('token') });
     return this.userService.verifyTokenUsingGET().pipe(
-      tap((expirationTime) => {
-        ctx.patchState({ tokenExpirtaionTime: expirationTime['expirationTime'].valueOf() / 60000 });
+      tap(() => {
         ctx.dispatch(new GetAuthenticatedUserAction());
       }),
       catchError((error, caught) => {
         ctx.dispatch(new Navigate(["/login"]))
         ctx.patchState({ token: null });
-          Cookies.remove('token');
-        console.log('ERROR IN VERIFYTOKENACTION');
+        Cookies.remove('token');
+        console.log('ERROR IN VerifyTokenAction');
         console.log(error.error);
         return empty();
       })
@@ -109,13 +112,10 @@ export class UserState {
   @Action(RefreshTokenAction)
   refreshToken(ctx: StateContext<UserStateModel>, { }: RefreshTokenAction) {
     return this.userService.verifyTokenUsingGET().pipe(
-      tap((expirationTime) => {
-        ctx.patchState({ tokenExpirtaionTime: expirationTime['expirationTime'].valueOf() / 60000 });
-      }),
       catchError((error, caught) => {
         ctx.dispatch(new Navigate(["/login"]))
         ctx.patchState({ token: null });
-        console.log('ERROR IN REFRESHYTOKENACTION');
+        console.log('ERROR IN RefreshTokenAction');
         console.log(error.error);
         return empty();
       })
@@ -129,6 +129,29 @@ export class UserState {
       authenticatedUser: userModel.authenticatedUser ? userModel.authenticatedUser : ctx.getState().authenticatedUser,
       errorMessage: userModel.errorMessage ? userModel.errorMessage : ctx.getState().errorMessage
     });
+  }
+
+  @Action(GetAllRolesAction)
+  getAllRoles(ctx: StateContext<UserStateModel>, { }: GetAllRolesAction) {
+    return this.userService.getAllRolesUsingGET().pipe(
+      tap(roles => {
+        ctx.patchState({ roles: roles });
+      })
+    )
+  }
+
+  @Action(GetTokenExpirationTimeAction)
+  getTokenExpirationTime(ctx: StateContext<UserStateModel>, { }: GetTokenExpirationTimeAction) {
+    return this.userService.getTokenExpirationTimeUsingGET().pipe(
+      tap(tokenExpitarionTime => {
+        ctx.patchState({tokenExpirationTime: tokenExpitarionTime})
+      }),
+      catchError((error, caught) => {
+        console.log('ERROR IN GetTokenExpirationTimeAction');
+        console.log(error.error);
+        return empty();
+      })
+    )
   }
 
 }

@@ -51,10 +51,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         claims.put("authorities", authorities);
 
         String token = JwtTokenService.generateToken(username, claims);
-        int tokenExpirationTime = JwtTokenService.getTokenExpirationTime();
 
         responseBody.put("token", token);
-        responseBody.put("expirationTime", tokenExpirationTime);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getWriter(), responseBody);
     }

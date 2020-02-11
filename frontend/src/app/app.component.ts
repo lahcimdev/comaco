@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IconImport } from './service/iconImport';
 import { Store } from '@ngxs/store';
-import { VerifyTokenAction } from './state/user/user.actions';
+import { VerifyTokenAction, GetTokenExpirationTimeAction } from './state/user/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,8 @@ export class AppComponent implements OnInit {
   constructor(private store: Store, private translateService: TranslateService, private iconImport: IconImport) { }
 
   ngOnInit(): void {
+    this.store.dispatch(new GetTokenExpirationTimeAction());
+
     this.translateService.addLangs(["pl", "en"]);
     this.translateService.setDefaultLang('pl');
     this.translateService.use('pl');
@@ -22,5 +24,5 @@ export class AppComponent implements OnInit {
 
     this.store.dispatch(new VerifyTokenAction());
   }
-  
+
 }

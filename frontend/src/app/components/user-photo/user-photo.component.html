@@ -1,0 +1,19 @@
+<div mat-dialog-content>
+  <image-cropper
+  [imageChangedEvent]="image"
+  maintainAspectRatio="true"
+  aspectRatio="1"
+  format="png"
+  cropperMinWidth="256"
+  cropperMinHeight="256"
+  resizeToWidth="256"
+  resizeToHeight="256"
+  (imageCropped)="imageCropped($event)"
+  (loadImageFailed)="loadImageFailed()"
+></image-cropper>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">{{'user-photo.cancel' | translate}}</button>
+  <button mat-button [mat-dialog-close]="croppedImage" cdkFocusInitial>{{'user-photo.ok' | translate}}</button>
+</div>
