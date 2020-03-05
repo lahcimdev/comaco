@@ -41,3 +41,8 @@ export class GetTokenExpirationTimeAction {
   constructor() { }
 }
 
+// UserStateSetters
+export class SetUserStateErrorMessageAction {
+  static readonly type = '[User] SetUserStateErrorMessageAction';
+  constructor(public errorMessage: string) { }
+}

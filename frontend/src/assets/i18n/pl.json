@@ -6,7 +6,10 @@
     },
 
     "navigation": {
-        "dashboard": "Pulpit"
+        "dashboard": "Pulpit",
+        "employeeList": "Lista pracowników",
+        "employeeCreate": "Dodaj pracownika",
+        "employeeEdit": "Edytuj pracownika"
     },
 
     "login": {
@@ -20,7 +23,7 @@
             "requiredUsername": "Podaj nazwę użytkownika",
             "requiredPassword": "Podaj swoje hasło",
             "formLoginValidation": "Wypełnij wszystkie wymagane pola",
-            "incorecsUsernamePassword": "Niepoprawne dane logowania"
+            "incorrectUsernamePassword": "Niepoprawne dane logowania"
         }
     },
     "employee": {
@@ -62,6 +65,8 @@
         },
         "createEmployee": "Utwórz pracownika",
         "errorMessages": {
+            "required": "To pole jest wymagane",
+            "email": "Niepoprawny format e-mail",
             "requiredEmployee": "Wypełnij wszystkie wymagane pola",
             "requiredAddress": "Wypełnij wszystkie wymagane pola"
         }

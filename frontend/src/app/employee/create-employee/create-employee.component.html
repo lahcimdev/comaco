@@ -11,11 +11,18 @@
             <mat-form-field>
                 <input matInput formControlName="username" placeholder="{{ 'employee.username' | translate }}"
                     type="text" required>
+                    <mat-error *ngIf="errorHandlingEmployee('username', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <input matInput formControlName="password" placeholder="{{ 'employee.password' | translate }}"
                     type="password" required>
+                    <mat-hint align="end">{{employeeForm.get('password').value.length}}</mat-hint>
+                    <mat-error *ngIf="errorHandlingEmployee('password', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
             </mat-form-field>
 
             <mat-form-field *ngIf="employeeTypes$ | async as employeeTypes">
@@ -24,41 +31,63 @@
                     <mat-option *ngFor="let employeeType of employeeTypes" [value]="employeeType">{{employeeType}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="errorHandlingEmployee('employeeType', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
             </mat-form-field>
+
 
             <mat-form-field *ngIf="roles$ | async as roles">
                 <mat-select formControlName="roles" multiple placeholder="{{ 'employee.roles' | translate }}" required>
                     <mat-option *ngFor="let role of roles" [value]="role">{{role.name.substr(5)}}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="errorHandlingEmployee('roles', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
             </mat-form-field>
             <br />
             <mat-form-field>
                 <input matInput formControlName="firstName" placeholder="{{ 'employee.firstName' | translate }}"
                     type="text" required>
+                    <mat-error *ngIf="errorHandlingEmployee('firstName', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <input matInput formControlName="lastName" placeholder="{{ 'employee.lastName' | translate }}"
                     type="text" required>
+                    <mat-error *ngIf="errorHandlingEmployee('lastName', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <input matInput formControlName="email" placeholder="{{ 'employee.email' | translate }}" type="text"
                     required>
+                    <mat-error *ngIf="errorHandlingEmployee('email', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
+                    <mat-error *ngIf="errorHandlingEmployee('email', 'email')">
+                        {{ 'create-employee.errorMessages.email' | translate }}
+                    </mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <input matInput formControlName="phone" placeholder="{{ 'employee.phone' | translate }}" type="text"
                     required>
+                    <mat-error *ngIf="errorHandlingEmployee('phone', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <input matInput formControlName="birthDate" placeholder="{{ 'employee.birthDate' | translate }}"
-                    type="date" required>
+                    type="date">
             </mat-form-field>
 
             <mat-form-field>
-                <mat-select formControlName="sex" placeholder="{{ 'employee.sex' | translate }}" required>
+                <mat-select formControlName="sex" placeholder="{{ 'employee.sex' | translate }}">
                     <mat-option *ngFor="let genderel of sex" [value]="genderel.value">
                         {{ genderel.translate | translate }}</mat-option>
                 </mat-select>
@@ -88,10 +117,8 @@
 
         <button mat-button (click)="fileInput.click()">
             <span>{{(finalImage ? 'create-employee.photo.changePhoto': 'create-employee.photo.addPhoto') | translate}}</span>
-            <input #fileInput type="file" (change)="openFile($event)" style="display:none;" />
+            <input #fileInput type="file" (change)="openPhotoFile($event)" style="display:none;" />
         </button>
-
-        <mat-icon *ngIf="finalImage">insert_photo</mat-icon>
 
         <button *ngIf="finalImage" mat-button
             (click)="deleteImage()">{{'create-employee.photo.deletePhoto' | translate}}</button>
@@ -134,21 +161,30 @@
                     <mat-form-field>
                         <input matInput formControlName="street"
                             placeholder="{{ 'employee.address.street' | translate }}" type="text" required>
+                            <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'street', 'required')">
+                                {{ 'create-employee.errorMessages.required' | translate }}
+                            </mat-error>
                     </mat-form-field>
 
                     <mat-form-field>
                         <input matInput formControlName="city" placeholder="{{ 'employee.address.city' | translate }}"
                             type="text" required>
+                        <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'city', 'required')">
+                            {{ 'create-employee.errorMessages.required' | translate }}
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field>
                         <input matInput formControlName="postalCode"
                             placeholder="{{ 'employee.address.postalCode' | translate }}" type="text" required>
+                            <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'postalCode', 'required')">
+                                {{ 'create-employee.errorMessages.required' | translate }}
+                            </mat-error>
                     </mat-form-field>
 
                     <mat-form-field>
                         <input matInput formControlName="description"
-                            placeholder="{{ 'employee.address.description' | translate }}" type="text" required>
+                            placeholder="{{ 'employee.address.description' | translate }}" type="text">
                     </mat-form-field>
                 </form>
 

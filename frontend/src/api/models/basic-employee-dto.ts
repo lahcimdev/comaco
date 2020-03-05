@@ -4,4 +4,5 @@ export interface BasicEmployeeDto {
   firstName?: string;
   id?: number;
   lastName?: string;
+  photo?: string;
 }

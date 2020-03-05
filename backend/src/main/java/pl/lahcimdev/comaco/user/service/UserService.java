@@ -3,19 +3,19 @@ package pl.lahcimdev.comaco.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import pl.lahcimdev.comaco.customer.domain.Customer;
 import pl.lahcimdev.comaco.dto.authenticateduser.AuthenticatedUserDto;
 import pl.lahcimdev.comaco.dto.authenticateduser.AuthenticatedUserDtoMapper;
-import pl.lahcimdev.comaco.security.JwtTokenService;
+import pl.lahcimdev.comaco.employee.domain.Employee;
+import pl.lahcimdev.comaco.service.UserPhotoService;
 import pl.lahcimdev.comaco.user.domain.Role;
+import pl.lahcimdev.comaco.user.domain.User;
 import pl.lahcimdev.comaco.user.domain.UserType;
 import pl.lahcimdev.comaco.user.repository.RoleRepository;
 import pl.lahcimdev.comaco.user.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.Validation;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService {
@@ -23,12 +23,14 @@ public class UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private AuthenticatedUserDtoMapper authenticatedUserDtoMapper;
+    private UserPhotoService userPhotoService;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, AuthenticatedUserDtoMapper authenticatedUserDtoMapper) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, AuthenticatedUserDtoMapper authenticatedUserDtoMapper, UserPhotoService userPhotoService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authenticatedUserDtoMapper = authenticatedUserDtoMapper;
+        this.userPhotoService = userPhotoService;
     }
 
     public AuthenticatedUserDto getAuthenticatedUserDto() {
@@ -51,9 +53,14 @@ public class UserService {
         return roleRepository.findAll();
     }
 
+
     public void deleteUser(Long id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User doesn't exist in database")
+        );
+        userRepository.deleteById(id);
+        if (user instanceof Employee) {
+            userPhotoService.deleteUserDirectory(UserType.EMPLOYEE, user.getId());
         }
 
     }

@@ -67,10 +67,10 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
 
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
-      birthDate: ['', [Validators.required]],
-      sex: ['', [Validators.required]],
+      birthDate: [''],
+      sex: [''],
     })
 
     this.addressForm.push(this.formBuilder.group({
@@ -78,7 +78,7 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
       street: ['', [Validators.required]],
       city: ['', [Validators.required]],
       postalCode: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: [''],
     }))
   }
 
@@ -86,7 +86,7 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
     if (this.dialogImage) {
       this.dialogImage.unsubscribe();
     }
-    
+
   }
 
   addAddressTab() {
@@ -96,7 +96,7 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
       street: ['', [Validators.required]],
       city: ['', [Validators.required]],
       postalCode: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: [''],
     }))
     this.selectedTab.setValue(this.addressTabs.length - 1);
   }
@@ -111,28 +111,36 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
     }
   }
 
+  errorHandlingEmployee(control: string, error: string) {
+    return this.employeeForm.controls[control].hasError(error);
+  }
+  errorHandlingAddress(selectedTab: number, control: string, error: string) {
+    return this.addressForm[selectedTab].controls[control].hasError(error);
+  }
+
+
   verifyCreateForm(): boolean {
     let result: boolean = true;
     if (this.employeeForm.invalid) {
-      this.errorMessage = {
-        employee: 'create-employee.errorMessages.requiredEmployee',
-        address: this.errorMessage.address
-      };
+      this.employeeForm.markAllAsTouched();
+      this.errorMessage.employee = 'create-employee.errorMessages.requiredEmployee';
       result = false;
+    } else {
+      this.errorMessage.employee = null;
     }
     for (let i = 0; i < this.addressForm.length; i++) {
       if (this.addressForm[i].invalid) {
-        this.errorMessage = {
-          employee: this.errorMessage.employee,
-          address: 'create-employee.errorMessages.requiredAddress'
-        };
+        this.addressForm[i].markAllAsTouched();
+        this.errorMessage.address = 'create-employee.errorMessages.requiredAddress';
         result = false;
+      } else {
+        this.errorMessage.address = null;
       }
     }
     return result;
   }
 
-  createAddresslist(): Array<Address> {
+  createAddressList(): Array<Address> {
     let addressList: Array<Address> = [];
     this.addressForm.forEach(address => {
       if (address.valid) {
@@ -167,13 +175,13 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
         phone: this.employeeForm.get('phone').value,
         sex: this.employeeForm.get('sex').value,
         birthDate: this.employeeForm.get('birthDate').value,
-        address: this.createAddresslist()
+        address: this.createAddressList()
       },
-      employeePhoto))
+        employeePhoto))
     }
   }
 
-  openFile(event) {
+  openPhotoFile(event) {
     const selectedFile = event;
 
     const dialogReference = this.dialog.open(UserPhotoComponent, {

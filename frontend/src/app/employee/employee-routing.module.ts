@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../service/auth.guard';
-import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { EmployeeListComponent } from './list-employee/list-employee.component';
 import { RolesGuard } from '../service/roles.guard';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
+import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
 
 
 const routes: Routes = [
   {
-    path: 'employee-list',
+    path: 'list-employee',
     component: EmployeeListComponent,
     canActivate: [AuthGuard, RolesGuard],
     data: {roles: ['ROLE_MANAGER']}
@@ -18,6 +19,11 @@ const routes: Routes = [
     component: CreateEmployeeComponent,
     canActivate: [AuthGuard, RolesGuard],
     data: {roles: ['ROLE_MANAGER']}
+  },
+  {
+    path: 'edit-employee/:id',
+    component: EditEmployeeComponent,
+    canActivate: [AuthGuard],
   }
 ];
 

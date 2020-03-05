@@ -1,0 +1,225 @@
+<mat-form-field *ngIf="basicEmployeeDtoList$ | async as basicEmployeeDtoList">
+    <mat-label>Wybierz pracownika</mat-label>
+    <form [formGroup]="employeeListForm">
+        <mat-select formControlName="basicEmployeeDto" (selectionChange)="changeEmployee($event.value)">
+            <!-- <mat-option [value]="0">none</mat-option> -->
+            <mat-option *ngFor="let basicEmployeeDto of basicEmployeeDtoList" [value]="basicEmployeeDto.id">
+                <span>{{basicEmployeeDto.id + '     '}}</span>
+                <img
+                    [src]="basicEmployeeDto.photo ? ('data:image/png;base64,' + basicEmployeeDto.photo) : ('./../../../assets/images/user_32x32.png')" />
+                <span>{{basicEmployeeDto.firstName + '  '}}</span>
+                <span>{{basicEmployeeDto.lastName + '     '}}</span>
+                <span>{{basicEmployeeDto.employeeType}}</span>
+            </mat-option>
+        </mat-select>
+    </form>
+</mat-form-field>
+
+<div *ngIf="employee$ | async as employee">
+
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Dane logowania</mat-card-title>
+            <mat-card-subtitle>Podaj podstawowe dane nowego pracownika</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="employeeForm">
+                <mat-form-field>
+                    <input matInput formControlName="username" readonly="true"
+                        placeholder="{{ 'employee.username' | translate }}" type="text" required>
+                </mat-form-field>
+            </form>
+            <p>Utworzony {{ employee.createdDate | date: 'dd.MM.yyy' }} przez {{ employee.createdBy }}</p>
+        </mat-card-content>
+
+    </mat-card>
+
+    <br />
+    <br />
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Dane dostępowe</mat-card-title>
+            <mat-card-subtitle>Podaj podstawowe dane nowego pracownika</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="employeeForm">
+                <mat-form-field *ngIf="employeeTypes$ | async as employeeTypes">
+                    <mat-select formControlName="employeeType" placeholder="{{ 'employee.employeeType' | translate }}"
+                        required>
+                        <mat-option *ngFor="let employeeType of employeeTypes" [value]="employeeType">{{employeeType}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="errorHandlingEmployee('employeeType', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field *ngIf="roles$ | async as roles">
+                    <mat-select [compareWith]="compareRoles" formControlName="roles" multiple
+                        placeholder="{{ 'employee.roles' | translate }}" required>
+                        <mat-option *ngFor="let role of roles" [value]="role">{{role.name.substr(5)}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="errorHandlingEmployee('roles', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <br />
+    <br />
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Zdjęcie</mat-card-title>
+            <mat-card-subtitle>Podaj podstawowe dane nowego pracownika</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <img width="256px" height="256px"
+                [src]="employeePhoto ? (employeePhoto) : ('./../../../assets/images/user_256x256.png')" />
+
+                <br />
+
+        <button mat-button (click)="fileInput.click()">
+            <span>{{(employeePhoto ? 'create-employee.photo.changePhoto': 'create-employee.photo.addPhoto') | translate}}</span>
+            <input #fileInput type="file" (change)="openPhotoFile($event)" style="display:none;" />
+        </button>
+
+        <button *ngIf="employeePhoto" mat-button
+            (click)="deletePhoto()">{{'create-employee.photo.deletePhoto' | translate}}</button>
+
+        </mat-card-content>
+    </mat-card>
+
+
+    <br />
+    <br />
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Dane podstawowe</mat-card-title>
+            <mat-card-subtitle>Podaj podstawowe dane nowego pracownika</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="employeeForm">
+                <mat-form-field>
+                    <input matInput formControlName="firstName" placeholder="{{ 'employee.firstName' | translate }}"
+                        type="text" required>
+                        <mat-error *ngIf="errorHandlingEmployee('firstName', 'required')">
+                            {{ 'create-employee.errorMessages.required' | translate }}
+                        </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput formControlName="lastName" placeholder="{{ 'employee.lastName' | translate }}"
+                        type="text" required>
+                        <mat-error *ngIf="errorHandlingEmployee('lastName', 'required')">
+                            {{ 'create-employee.errorMessages.required' | translate }}
+                        </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput formControlName="email" placeholder="{{ 'employee.email' | translate }}" type="text"
+                        required>
+                        <mat-error *ngIf="errorHandlingEmployee('email', 'required')">
+                            {{ 'create-employee.errorMessages.required' | translate }}
+                        </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput formControlName="phone" placeholder="{{ 'employee.phone' | translate }}" type="text"
+                        required>
+                        <mat-error *ngIf="errorHandlingEmployee('phone', 'required')">
+                            {{ 'create-employee.errorMessages.required' | translate }}
+                        </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select formControlName="sex" placeholder="{{ 'employee.sex' | translate }}">
+                        <mat-option *ngFor="let genderel of sex" [value]="genderel.value">
+                            {{ genderel.translate | translate }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput formControlName="birthDate" placeholder="{{ 'employee.birthDate' | translate }}"
+                        type="date">
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+
+    </mat-card>
+
+    <br />
+    <br />
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Dane adresowe</mat-card-title>
+            <mat-card-subtitle>Podaj podstawowe dane nowego pracownika</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+            <button mat-raised-button
+                (click)="addAddressTab()">{{ 'create-employee.address.addAddress' | translate }}</button>
+
+            <button mat-raised-button *ngIf="addressTabs.length > 1"
+                (click)="removeAddressTab(selectedTab.value)">{{ 'create-employee.address.deleteAddress' | translate }}</button>
+
+
+            <mat-tab-group [selectedIndex]="selectedTab.value" (selectedIndexChange)="selectedTab.setValue($event)">
+                <mat-tab *ngFor="let addressTab of addressTabs">
+
+                    <ng-template mat-tab-label>
+                        <mat-icon>{{ addressTab==='MAIN' ? 'home' : 'home_work' }}</mat-icon>
+                        <span>
+                            {{ (addressTab==='MAIN' ? 'employee.address.addressType.main' : 'employee.address.addressType.additional') | translate }}
+                        </span>
+                    </ng-template>
+
+                    <form [formGroup]="addressForm[selectedTab.value]">
+                        <mat-form-field>
+                            <input matInput formControlName="street"
+                                placeholder="{{ 'employee.address.street' | translate }}" type="text" required>
+                                <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'street', 'required')">
+                                    {{ 'create-employee.errorMessages.required' | translate }}
+                                </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="city"
+                                placeholder="{{ 'employee.address.city' | translate }}" type="text" required>
+                                <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'city', 'required')">
+                                    {{ 'create-employee.errorMessages.required' | translate }}
+                                </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="postalCode"
+                                placeholder="{{ 'employee.address.postalCode' | translate }}" type="text" required>
+                                <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'postalCode', 'required')">
+                                    {{ 'create-employee.errorMessages.required' | translate }}
+                                </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="description"
+                                placeholder="{{ 'employee.address.description' | translate }}" type="text">
+                        </mat-form-field>
+                    </form>
+
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+
+    </mat-card>
+
+    <br />
+    <br />
+
+    <button mat-button (click)="updateEmployee()">Update Employee</button>
+
+
+</div>
+

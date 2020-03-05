@@ -3,30 +3,40 @@
 <ng-container *ngIf="basicEmployeeDtoPage$ | async as basicEmployeeDtoPage">
 
   <mat-form-field style="width: 100%;">
-    <input matInput placeholder="Filter" (keyup)="refreshList()">
+    <input matInput placeholder="Filter" (keyup)="filterText.next()">
   </mat-form-field>
 
-  <table mat-table [dataSource]="basicEmployeeDtoPage.content" matSort (matSortChange)="refreshList()"  multiTemplateDataRows matSortDisableClear style="width: 100%;">
+  <table mat-table [dataSource]="basicEmployeeDtoPage.content" matSort (matSortChange)="refreshList()"
+    multiTemplateDataRows matSortDisableClear style="width: 100%;">
 
-    <!-- Position Column -->
+    <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'employee.id' | translate }} </th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
 
-    <!-- Name Column -->
+    <!-- Photo Column -->
+    <ng-container matColumnDef="photo">
+      <th mat-header-cell *matHeaderCellDef>  </th>
+      <td mat-cell *matCellDef="let element">
+        <img
+          [src]="element.photo ? ('data:image/png;base64,' + element.photo) : ('./../../../assets/images/user_32x32.png')" />
+      </td>
+    </ng-container>
+
+    <!-- FirstName Column -->
     <ng-container matColumnDef="firstName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'employee.firstName' | translate }} </th>
       <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
     </ng-container>
 
-    <!-- Weight Column -->
+    <!-- LastName Column -->
     <ng-container matColumnDef="lastName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'employee.lastName' | translate }} </th>
       <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
+    <!-- EmployeeType Column -->
     <ng-container matColumnDef="employeeType">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'employee.employeeType' | translate }} </th>
       <td mat-cell *matCellDef="let element"> {{element.employeeType}} </td>
@@ -41,9 +51,9 @@
     <ng-container matColumnDef="employeeDetails">
       <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
         <div *ngIf="element.id === expandedSymbol">
-          Details for {{ element.firstName }} and UpdateUser, DeleteUser, GetIds
-          <button mat-button >Edytuj</button>
-          <button mat-button >Usuń</button>
+          <p>Details for user {{ element.firstName }}</p>
+          <button mat-button (click)="editEmployee(element.id)">Edytuj</button>
+          <button mat-button (click)="deleteEmployee(element.id)">Usuń</button>
         </div>
       </td>
     </ng-container>
@@ -51,11 +61,12 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleExpandableSymbol(row.id)"></tr>
     <tr mat-row *matRowDef="let row; columns: ['employeeDetails'];"
-    [@expandableRow]="row.id === expandedSymbol ? 'expanded' : 'collapsed'">
-  </tr>
+      [@expandableRow]="row.id === expandedSymbol ? 'expanded' : 'collapsed'">
+    </tr>
 
   </table>
 
-  <mat-paginator [pageSize]="basicEmployeeDtoPage.size" [pageSizeOptions]="[5, 10, 25, 50, 100]" [length]="basicEmployeeDtoPage.totalElements" showFirstLastButtons  (page)="refreshList()"></mat-paginator>
+  <mat-paginator [pageSize]="basicEmployeeDtoPage.size" [pageSizeOptions]="[5, 10, 25, 50, 100]"
+    [length]="basicEmployeeDtoPage.totalElements" showFirstLastButtons (page)="refreshList()"></mat-paginator>
 
 </ng-container>

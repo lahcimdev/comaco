@@ -7,8 +7,9 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
-import { PageBasicEmployeeDto } from '../models/page-basic-employee-dto';
+import { BasicEmployeeDto } from '../models/basic-employee-dto';
 import { Employee } from '../models/employee';
+import { PageBasicEmployeeDto } from '../models/page-basic-employee-dto';
 
 /**
  * Employee Controller
@@ -17,9 +18,12 @@ import { Employee } from '../models/employee';
   providedIn: 'root',
 })
 class EmployeeControllerService extends __BaseService {
-  static readonly getBasicEmployeeDtoPageUsingGETPath = '/api/employee/listfilter';
+  static readonly getBasicEmployeeDtoListUsingGETPath = '/api/employee/list';
   static readonly createEmployeeUsingPOSTPath = '/api/employee/new';
+  static readonly getBasicEmployeeDtoPageUsingGETPath = '/api/employee/page';
   static readonly getAllEmployeeTypesUsingGETPath = '/api/employee/types';
+  static readonly updateEmployeeUsingPUTPath = '/api/employee/update';
+  static readonly getEmployeeUsingGETPath = '/api/employee/{id}';
   static readonly updateEmployeePhotoUsingPOSTPath = '/api/employee/{id}/photo';
 
   constructor(
@@ -30,32 +34,15 @@ class EmployeeControllerService extends __BaseService {
   }
 
   /**
-   * @param params The `EmployeeControllerService.GetBasicEmployeeDtoPageUsingGETParams` containing the following parameters:
-   *
-   * - `size`: size
-   *
-   * - `page`: page
-   *
-   * - `sort`: sort
-   *
-   * - `properties`: properties
-   *
-   * - `filter`: filter
-   *
    * @return OK
    */
-  getBasicEmployeeDtoPageUsingGETResponse(params: EmployeeControllerService.GetBasicEmployeeDtoPageUsingGETParams): __Observable<__StrictHttpResponse<PageBasicEmployeeDto>> {
+  getBasicEmployeeDtoListUsingGETResponse(): __Observable<__StrictHttpResponse<Array<BasicEmployeeDto>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    if (params.sort != null) __params = __params.set('sort', params.sort.toString());
-    (params.properties || []).forEach(val => {if (val != null) __params = __params.append('properties', val.toString())});
-    if (params.filter != null) __params = __params.set('filter', params.filter.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/employee/listfilter`,
+      this.rootUrl + `/api/employee/list`,
       __body,
       {
         headers: __headers,
@@ -66,28 +53,16 @@ class EmployeeControllerService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<PageBasicEmployeeDto>;
+        return _r as __StrictHttpResponse<Array<BasicEmployeeDto>>;
       })
     );
   }
   /**
-   * @param params The `EmployeeControllerService.GetBasicEmployeeDtoPageUsingGETParams` containing the following parameters:
-   *
-   * - `size`: size
-   *
-   * - `page`: page
-   *
-   * - `sort`: sort
-   *
-   * - `properties`: properties
-   *
-   * - `filter`: filter
-   *
    * @return OK
    */
-  getBasicEmployeeDtoPageUsingGET(params: EmployeeControllerService.GetBasicEmployeeDtoPageUsingGETParams): __Observable<PageBasicEmployeeDto> {
-    return this.getBasicEmployeeDtoPageUsingGETResponse(params).pipe(
-      __map(_r => _r.body as PageBasicEmployeeDto)
+  getBasicEmployeeDtoListUsingGET(): __Observable<Array<BasicEmployeeDto>> {
+    return this.getBasicEmployeeDtoListUsingGETResponse().pipe(
+      __map(_r => _r.body as Array<BasicEmployeeDto>)
     );
   }
 
@@ -128,6 +103,68 @@ class EmployeeControllerService extends __BaseService {
   }
 
   /**
+   * @param params The `EmployeeControllerService.GetBasicEmployeeDtoPageUsingGETParams` containing the following parameters:
+   *
+   * - `size`: size
+   *
+   * - `page`: page
+   *
+   * - `sort`: sort
+   *
+   * - `properties`: properties
+   *
+   * - `filter`: filter
+   *
+   * @return OK
+   */
+  getBasicEmployeeDtoPageUsingGETResponse(params: EmployeeControllerService.GetBasicEmployeeDtoPageUsingGETParams): __Observable<__StrictHttpResponse<PageBasicEmployeeDto>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    if (params.sort != null) __params = __params.set('sort', params.sort.toString());
+    (params.properties || []).forEach(val => {if (val != null) __params = __params.append('properties', val.toString())});
+    if (params.filter != null) __params = __params.set('filter', params.filter.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/employee/page`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageBasicEmployeeDto>;
+      })
+    );
+  }
+  /**
+   * @param params The `EmployeeControllerService.GetBasicEmployeeDtoPageUsingGETParams` containing the following parameters:
+   *
+   * - `size`: size
+   *
+   * - `page`: page
+   *
+   * - `sort`: sort
+   *
+   * - `properties`: properties
+   *
+   * - `filter`: filter
+   *
+   * @return OK
+   */
+  getBasicEmployeeDtoPageUsingGET(params: EmployeeControllerService.GetBasicEmployeeDtoPageUsingGETParams): __Observable<PageBasicEmployeeDto> {
+    return this.getBasicEmployeeDtoPageUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageBasicEmployeeDto)
+    );
+  }
+
+  /**
    * @return OK
    */
   getAllEmployeeTypesUsingGETResponse(): __Observable<__StrictHttpResponse<Array<'DIRECTOR' | 'MAIN_MANAGER' | 'MANAGER' | 'SALES_MANAGER' | 'IT_SPECIALIST'>>> {
@@ -157,6 +194,78 @@ class EmployeeControllerService extends __BaseService {
   getAllEmployeeTypesUsingGET(): __Observable<Array<'DIRECTOR' | 'MAIN_MANAGER' | 'MANAGER' | 'SALES_MANAGER' | 'IT_SPECIALIST'>> {
     return this.getAllEmployeeTypesUsingGETResponse().pipe(
       __map(_r => _r.body as Array<'DIRECTOR' | 'MAIN_MANAGER' | 'MANAGER' | 'SALES_MANAGER' | 'IT_SPECIALIST'>)
+    );
+  }
+
+  /**
+   * @param employee employee
+   * @return OK
+   */
+  updateEmployeeUsingPUTResponse(employee: Employee): __Observable<__StrictHttpResponse<Employee>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = employee;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/employee/update`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Employee>;
+      })
+    );
+  }
+  /**
+   * @param employee employee
+   * @return OK
+   */
+  updateEmployeeUsingPUT(employee: Employee): __Observable<Employee> {
+    return this.updateEmployeeUsingPUTResponse(employee).pipe(
+      __map(_r => _r.body as Employee)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  getEmployeeUsingGETResponse(id: number): __Observable<__StrictHttpResponse<Employee>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/employee/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Employee>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  getEmployeeUsingGET(id: number): __Observable<Employee> {
+    return this.getEmployeeUsingGETResponse(id).pipe(
+      __map(_r => _r.body as Employee)
     );
   }
 

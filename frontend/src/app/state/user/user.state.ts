@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { LoginAction, GetAuthenticatedUserAction, LogoutAction, UpdateUserStateAction, VerifyTokenAction, RefreshTokenAction, GetAllRolesAction, GetTokenExpirationTimeAction } from './user.actions';
+import { LoginAction, GetAuthenticatedUserAction, LogoutAction, UpdateUserStateAction, VerifyTokenAction, RefreshTokenAction, GetAllRolesAction, GetTokenExpirationTimeAction, SetUserStateErrorMessageAction } from './user.actions';
 import { tap, catchError } from 'rxjs/operators';
 import { UserControllerService } from 'src/api/services';
 import { empty } from 'rxjs';
@@ -56,9 +56,7 @@ export class UserState {
         ctx.dispatch(new GetAuthenticatedUserAction());
       }),
       catchError((error, caught) => {
-        console.log('ERROR LOGINACTION');
-        console.log(error.error);
-        ctx.patchState({ errorMessage: 'login.errorMessages.incorecsUsernamePassword' });
+        ctx.patchState({ errorMessage: 'login.errorMessages.incorrectUsernamePassword' });
         return empty();
       })
     )
@@ -93,7 +91,7 @@ export class UserState {
 
   @Action(VerifyTokenAction)
   verifyToken(ctx: StateContext<UserStateModel>, { }: VerifyTokenAction) {
-      ctx.patchState({ token: Cookies.get('token') });
+    ctx.patchState({ token: Cookies.get('token') });
     return this.userService.verifyTokenUsingGET().pipe(
       tap(() => {
         ctx.dispatch(new GetAuthenticatedUserAction());
@@ -144,7 +142,7 @@ export class UserState {
   getTokenExpirationTime(ctx: StateContext<UserStateModel>, { }: GetTokenExpirationTimeAction) {
     return this.userService.getTokenExpirationTimeUsingGET().pipe(
       tap(tokenExpitarionTime => {
-        ctx.patchState({tokenExpirationTime: tokenExpitarionTime})
+        ctx.patchState({ tokenExpirationTime: tokenExpitarionTime })
       }),
       catchError((error, caught) => {
         console.log('ERROR IN GetTokenExpirationTimeAction');
@@ -153,5 +151,14 @@ export class UserState {
       })
     )
   }
+
+  // UserStateSetters
+  @Action(SetUserStateErrorMessageAction)
+  setUserStateErrorMessage(ctx: StateContext<UserStateModel>, { errorMessage }: SetUserStateErrorMessageAction) {
+    ctx.patchState({errorMessage: errorMessage});
+  }
+
+  
+
 
 }

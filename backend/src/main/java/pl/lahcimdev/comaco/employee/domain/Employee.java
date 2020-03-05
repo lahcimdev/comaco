@@ -1,15 +1,11 @@
 package pl.lahcimdev.comaco.employee.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pl.lahcimdev.comaco.user.domain.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,26 +13,23 @@ public class Employee extends User {
 
     @Enumerated(EnumType.STRING)
     private EmployeeType employeeType;
-
-    @NotNull
+    @NotBlank
     private String firstName;
-
-    @NotNull
+    @NotBlank
     private String lastName;
-
+    @NotNull
+    @Email
     private String email;
-
+    @NotNull
     private String phone;
-
+    @Past
     private LocalDate birthDate;
-
     @Enumerated(EnumType.STRING)
     private Sex sex;
-
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @Size(min = 1)
     private List<Address> address;
-
     private String photo;
 
 
@@ -114,4 +107,5 @@ public class Employee extends User {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
 }

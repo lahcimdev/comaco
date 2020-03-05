@@ -12,6 +12,7 @@ import pl.lahcimdev.comaco.employee.domain.EmployeeType;
 import pl.lahcimdev.comaco.employee.service.EmployeeService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/employee")
@@ -34,8 +35,26 @@ public class EmployeeController {
         employeeService.updateEmployeePhoto(id, employeePhoto);
     }
 
+    @PutMapping("/update")
+    public Employee updateEmployee(@RequestBody Employee employee) {
+        return employeeService.updateEmployee(employee);
+    }
+
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/listfilter")
+    @GetMapping("/{id}")
+    public Employee getEmployee(@PathVariable Long id) {
+        return employeeService.getEmployee(id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/list")
+    public List<BasicEmployeeDto> getBasicEmployeeDtoList() {
+        return employeeService.getBasicEmployeeDtoList();
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/page")
     public Page<BasicEmployeeDto> getBasicEmployeeDtoPage(@RequestParam int page, @RequestParam int size,
                                                           @RequestParam(defaultValue = "ASC", required = false) Sort.Direction sort,
                                                           @RequestParam(defaultValue = "id", required = false) String[] properties,

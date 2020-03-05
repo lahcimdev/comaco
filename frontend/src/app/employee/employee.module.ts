@@ -7,11 +7,12 @@ import { DashboardEmployeeComponent } from './dashboard-employee/dashboard-emplo
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { EmployeeRoutingModule } from './employee-routing.module';
-import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { EmployeeListComponent } from './list-employee/list-employee.component';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UserPhotoComponent } from '../components/user-photo/user-photo.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     DashboardEmployeeComponent,
     EmployeeListComponent,
     CreateEmployeeComponent,
-    UserPhotoComponent
+    UserPhotoComponent,
+    EditEmployeeComponent
   ],
   entryComponents: [
     UserPhotoComponent

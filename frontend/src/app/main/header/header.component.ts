@@ -2,7 +2,7 @@ import { UserState } from 'src/app/state/user/user.state';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Store, Select } from '@ngxs/store';
-import { LogoutAction, VerifyTokenAction, RefreshTokenAction } from 'src/app/state/user/user.actions';
+import { LogoutAction, RefreshTokenAction } from 'src/app/state/user/user.actions';
 import { Observable, Subscription } from 'rxjs';
 import { AuthenticatedUserDto } from 'src/api/models';
 import { CountdownConfig, CountdownComponent } from 'ngx-countdown';

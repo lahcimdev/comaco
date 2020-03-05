@@ -3,8 +3,10 @@ package pl.lahcimdev.comaco.dto.authenticateduser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.lahcimdev.comaco.customer.repository.CustomerRepository;
+import pl.lahcimdev.comaco.employee.domain.Employee;
 import pl.lahcimdev.comaco.employee.repository.EmployeeRepository;
 import pl.lahcimdev.comaco.service.UserPhotoService;
+import pl.lahcimdev.comaco.service.UserPhotoSize;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -13,11 +15,13 @@ public class AuthenticatedUserDtoMapper {
 
     private EmployeeRepository employeeRepository;
     private CustomerRepository customerRepository;
+    private UserPhotoService userPhotoService;
 
     @Autowired
-    public AuthenticatedUserDtoMapper(EmployeeRepository employeeRepository, CustomerRepository customerRepository) {
+    public AuthenticatedUserDtoMapper(EmployeeRepository employeeRepository, CustomerRepository customerRepository, UserPhotoService userPhotoService) {
         this.employeeRepository = employeeRepository;
         this.customerRepository = customerRepository;
+        this.userPhotoService = userPhotoService;
     }
 
     public AuthenticatedUserDto mapEmployeeToAuthenticatedUserDto(String username) {
@@ -29,7 +33,7 @@ public class AuthenticatedUserDtoMapper {
                     authenticatedUserDto.setRoles(employee.getRoles());
                     authenticatedUserDto.setFirstName(employee.getFirstName());
                     authenticatedUserDto.setLastName(employee.getLastName());
-                    authenticatedUserDto.setPhoto(UserPhotoService.getPhoto(employee.getPhoto()));
+                    authenticatedUserDto.setPhoto(userPhotoService.getPhoto(employee.getPhoto(), UserPhotoSize.IMAGE_72x72));
                     return authenticatedUserDto;
                 }).orElseThrow(
                 () -> new EntityNotFoundException("User doesn't exist in database")

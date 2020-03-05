@@ -5,7 +5,10 @@
         "logout": "Logout"
     },
     "navigation": {
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "employeeList": "Employee List",
+        "employeeCreate": "Create Employee",
+        "employeeEdit": "Edit Employee"
     },
     "login": {
         "title": "LOGIN TO YOUR ACCOUNT",
@@ -18,7 +21,7 @@
             "requiredUsername": "Enter your username",
             "requiredPassword": "Enter your password",
             "formLoginValidation": "Enter all required fields",
-            "incorecsUsernamePassword": "Incorect username or password"
+            "incorrectUsernamePassword": "Incorect username or password"
         }
     },
     "employee": {
@@ -60,6 +63,8 @@
         },
         "createEmployee": "Create Employee",
         "errorMessages": {
+            "required": "This field is required",
+            "email": "It's not an e-mail format",
             "requiredEmployee": "Fill all required fields",
             "requiredAddress": "Fill all required fields"
         }

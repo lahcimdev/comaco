@@ -10,13 +10,13 @@
     <a mat-list-item routerLink="dashboard-employee">
         <mat-icon>add_circle_outline</mat-icon> {{ 'navigation.dashboard' | translate }}
     </a>
-    <a mat-list-item routerLink="employee-list">
-        <mat-icon>add_circle_outline</mat-icon> EMPLOYEE LIST
+    <a mat-list-item routerLink="list-employee">
+        <mat-icon>add_circle_outline</mat-icon> {{ 'navigation.employeeList' | translate }}
     </a>
     <a mat-list-item routerLink="create-employee">
-        <mat-icon>add_circle_outline</mat-icon> ADD EMPLOYEE
+        <mat-icon>add_circle_outline</mat-icon> {{ 'navigation.employeeCreate' | translate }}
     </a>
-    <a mat-list-item>
-        <mat-icon>search</mat-icon> Logout
+    <a mat-list-item routerLink="edit-employee/0">
+        <mat-icon>add_circle_outline</mat-icon> {{ 'navigation.employeeEdit' | translate }}
     </a>
 </mat-nav-list>

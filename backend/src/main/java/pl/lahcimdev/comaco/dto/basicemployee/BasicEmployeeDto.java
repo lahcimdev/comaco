@@ -8,6 +8,15 @@ public class BasicEmployeeDto {
     private String firstName;
     private String lastName;
     private EmployeeType employeeType;
+    private String photo;
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     public BasicEmployeeDto() {
     }
