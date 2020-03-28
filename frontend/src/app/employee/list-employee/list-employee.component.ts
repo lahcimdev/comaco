@@ -1,14 +1,15 @@
+import { SetBasicEmployeeDtoPageAction } from './../../state/employee/employee.actions';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { GetBasicEmployeeDtoPageAction } from 'src/app/state/employee/employee.actions';
+import { GetBasicEmployeeDtoPageAction, DeleteEmployeeAction } from 'src/app/state/employee/employee.actions';
 import { PageBasicEmployeeDto } from 'src/api/models';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatInput } from '@angular/material/input';
 import { expandableRowAnimation } from './expandable-row.animation';
 import { Navigate } from '@ngxs/router-plugin';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-employee',
@@ -45,10 +46,11 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.filterSubscription.unsubscribe();
+    this.store.dispatch(new SetBasicEmployeeDtoPageAction(null));
   }
 
   refreshList() {
-    this.store.dispatch(new GetBasicEmployeeDtoPageAction(this.matPaginator.pageIndex, this.matPaginator.pageSize, this.matSort.direction=='desc'?'DESC':'ASC', Array.of(this.matSort.active), this.filter.value));
+    this.store.dispatch(new GetBasicEmployeeDtoPageAction(this.matPaginator.pageIndex, this.matPaginator.pageSize, this.matSort.direction == 'desc' ? 'DESC' : 'ASC', Array.of(this.matSort.active), this.filter.value));
   }
 
   toggleExpandableSymbol(id: any): void {
@@ -64,7 +66,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   }
 
   deleteEmployee(id: number) {
-
+    this.store.dispatch(new DeleteEmployeeAction(id));
   }
 
 

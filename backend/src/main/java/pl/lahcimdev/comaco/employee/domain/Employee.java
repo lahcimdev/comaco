@@ -22,7 +22,7 @@ public class Employee extends User {
     private String email;
     @NotNull
     private String phone;
-    @Past
+    @Past()
     private LocalDate birthDate;
     @Enumerated(EnumType.STRING)
     private Sex sex;

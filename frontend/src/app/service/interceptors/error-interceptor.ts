@@ -15,16 +15,15 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error, caught) => {
-                console.log(error);
                 const errorStatus = error.error.status;
                 if (errorStatus === 401 && error.error.path === '/login') {
                     console.log('401 - przerzucam dalej');
-                    console.log(error);
                     return throwError(error);
-                } else {
+                }
+                if (errorStatus === 500) {
+                    this.store.dispatch(new Navigate(['server-error']));
                     console.log('INTERCEPTOR ERROR with status:' + error.error.status);
                     console.log(error.error);
-                    this.store.dispatch(new Navigate(["/login"]));
                     return empty();
                 }
             })

@@ -18,7 +18,12 @@ const routes: Routes = [
     path: 'create-employee',
     component: CreateEmployeeComponent,
     canActivate: [AuthGuard, RolesGuard],
-    data: {roles: ['ROLE_MANAGER']}
+    data: {roles: ['ROLE_MANAGER', 'ROLE_EMPLOYEE']}
+  },
+  {
+    path: 'edit-employee',
+    component: EditEmployeeComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'edit-employee/:id',

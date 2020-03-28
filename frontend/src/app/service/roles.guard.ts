@@ -16,25 +16,28 @@ export class RolesGuard implements CanActivate {
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-        let result: boolean = false;
+        let resultInt: number = 0;
         const rolesRequired: string[] = next.data.roles;
-        const authenticatedUser: AuthenticatedUserDto = this.store.selectSnapshot(UserState.getauthenticatedUser);
-       
+        const authenticatedUser = this.store.selectSnapshot(UserState.getauthenticatedUser);
+
         if (authenticatedUser) {
-            authenticatedUser.roles.forEach(roleUser => {
-                rolesRequired.forEach(roleRequired => {
-                    if (roleUser.name === roleRequired) {
-                        result = true;
+            rolesRequired.forEach(roleRequired => {
+                for (let i = 0; i < authenticatedUser.roles.length; i++) {
+                    if (roleRequired == authenticatedUser.roles[i].name) {
+                        resultInt++;
+                        return
                     }
-                })
-            });
-
+                }
+            })
         }
 
-        if (!result) {
-            this.router.navigate(["/authorization-error"])
+        if (resultInt != rolesRequired.length) {
+            this.router.navigate(["/authorization-error"]);
+            return false;
+        } else {
+            return true;
         }
-        return result;
+
     }
 
 }

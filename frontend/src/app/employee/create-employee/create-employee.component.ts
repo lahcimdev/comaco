@@ -69,8 +69,8 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
-      birthDate: [''],
-      sex: [''],
+      birthDate: [null],
+      sex: [null],
     })
 
     this.addressForm.push(this.formBuilder.group({
@@ -78,7 +78,7 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
       street: ['', [Validators.required]],
       city: ['', [Validators.required]],
       postalCode: ['', [Validators.required]],
-      description: [''],
+      description: [null],
     }))
   }
 

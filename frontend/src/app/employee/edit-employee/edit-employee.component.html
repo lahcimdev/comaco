@@ -2,11 +2,8 @@
     <mat-label>Wybierz pracownika</mat-label>
     <form [formGroup]="employeeListForm">
         <mat-select formControlName="basicEmployeeDto" (selectionChange)="changeEmployee($event.value)">
-            <!-- <mat-option [value]="0">none</mat-option> -->
             <mat-option *ngFor="let basicEmployeeDto of basicEmployeeDtoList" [value]="basicEmployeeDto.id">
-                <span>{{basicEmployeeDto.id + '     '}}</span>
-                <img
-                    [src]="basicEmployeeDto.photo ? ('data:image/png;base64,' + basicEmployeeDto.photo) : ('./../../../assets/images/user_32x32.png')" />
+                <img [src]="basicEmployeeDto.photo ? ('data:image/png;base64,' + basicEmployeeDto.photo) : ('./../../../assets/images/user_32x32.png')" />
                 <span>{{basicEmployeeDto.firstName + '  '}}</span>
                 <span>{{basicEmployeeDto.lastName + '     '}}</span>
                 <span>{{basicEmployeeDto.employeeType}}</span>

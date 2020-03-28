@@ -1,4 +1,4 @@
-import { Employee } from 'src/api/models';
+import { Employee, PageBasicEmployeeDto } from 'src/api/models';
 
 export class GetBasicEmployeeDtoPageAction {
   static readonly type = '[Employee] GetBasicEmployeeDtoPageAction';
@@ -21,23 +21,32 @@ export class GetAllEmployeeTypesAction {
 }
 
 export class CreateEmployeeAction {
-  static readonly type = '[User] CreateEmployeeAction';
+  static readonly type = '[Employee] CreateEmployeeAction';
   constructor(public employee: Employee, public employeePhoto?: string) { }
 }
 
 export class UpdateEmployeeAction {
-  static readonly type = '[User] UpdateEmployeeAction';
+  static readonly type = '[Employee] UpdateEmployeeAction';
   constructor(public employee: Employee, public employeePhoto?: string) { }
 }
 
 export class UpdateEmployeePhotoAction {
-  static readonly type = '[User] UpdateEmployeePhotoAction';
+  static readonly type = '[Employee] UpdateEmployeePhotoAction';
   constructor(public employeeId: number, public employeePhoto: string) { }
+}
+
+export class DeleteEmployeeAction {
+  static readonly type = '[Employee] DeleteEmployeeAction';
+  constructor(public employeeId: number) { }
 }
 
 
 // EmployeeStateSetters
-export class SetEmployeeStateEmployeeAction {
-  static readonly type = '[User] SetEmployeeStateEmployeeAction';
+export class SetEmployeeAction {
+  static readonly type = '[Employee] SetEmployeeAction';
   constructor(public employee: Employee) { }
+}
+export class SetBasicEmployeeDtoPageAction {
+  static readonly type = '[Employee] SetBasicEmployeeDtoPageAction';
+  constructor(public basicEmployeeDtoPage: PageBasicEmployeeDto) { }
 }

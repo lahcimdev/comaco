@@ -1,16 +1,17 @@
 <mat-sidenav-container>
 
-    <mat-sidenav *ngIf="authenticatedUser$ | async as authenticatedUser " #sidenav mode="side" opened disableClose="true" fixedInViewport="true">
+    <mat-sidenav *ngIf="authenticatedUser$ | async as authenticatedUser " #sidenav mode="side" opened
+        disableClose="true" fixedInViewport="true">
 
-<app-navigation-employee *ngIf="authenticatedUser.userType == 'EMPLOYEE'"></app-navigation-employee>
-<app-navigation-customer *ngIf="authenticatedUser.userType == 'CUSTOMER'"></app-navigation-customer>
+        <app-navigation-employee *ngIf="authenticatedUser.userType == 'EMPLOYEE'"></app-navigation-employee>
+        <app-navigation-customer *ngIf="authenticatedUser.userType == 'CUSTOMER'"></app-navigation-customer>
 
     </mat-sidenav>
 
     <mat-sidenav-content hasBackdrop="false">
 
         <router-outlet>
-            
+
         </router-outlet>
 
     </mat-sidenav-content>

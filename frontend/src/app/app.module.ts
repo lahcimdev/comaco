@@ -25,6 +25,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { AuthorizationErrorComponent } from './main/errors/authorization-error/authorization-error.component';
 import { CountdownModule } from 'ngx-countdown';
 import { ErrorInterceptor } from './service/interceptors/error-interceptor';
+import { ServerErrorComponent } from './main/errors/server-error/server-error.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ErrorInterceptor } from './service/interceptors/error-interceptor';
     FooterComponent,
     NavigationComponent,
     LoginComponent,
-    AuthorizationErrorComponent
+    AuthorizationErrorComponent,
+    ServerErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +65,11 @@ import { ErrorInterceptor } from './service/interceptors/error-interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     }
   ],

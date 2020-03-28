@@ -1,11 +1,3 @@
-import { UserModel } from '../models/user.model';
-import { Employee } from 'src/api/models';
-
-export class UpdateUserStateAction {
-  static readonly type = '[User] UpdateUserStateAction';
-  constructor(public userModel: UserModel) { }
-}
-
 export class LoginAction {
   static readonly type = '[User] LoginAction';
   constructor(public username: string, public password: string) { }
@@ -42,7 +34,11 @@ export class GetTokenExpirationTimeAction {
 }
 
 // UserStateSetters
-export class SetUserStateErrorMessageAction {
-  static readonly type = '[User] SetUserStateErrorMessageAction';
+export class SetTokenAction {
+  static readonly type = '[User] SetTokenAction';
+  constructor(public token: string) { }
+}
+export class SetErrorMessageAction {
+  static readonly type = '[User] SetErrorMessageAction';
   constructor(public errorMessage: string) { }
 }

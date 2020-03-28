@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ActivatedRoute } from '@angular/router';
-import { GetBasicEmployeeDtoListAction, GetAllEmployeeTypesAction, GetEmployeeAction, SetEmployeeStateEmployeeAction, UpdateEmployeeAction } from 'src/app/state/employee/employee.actions';
+import { GetBasicEmployeeDtoListAction, GetAllEmployeeTypesAction, GetEmployeeAction, SetEmployeeAction, UpdateEmployeeAction } from 'src/app/state/employee/employee.actions';
 import { BasicEmployeeDto, Role, Employee, Address } from 'src/api/models';
 import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -44,7 +44,7 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
   private selectedTab = new FormControl(0);
 
   private employeeSubscription: Subscription;
-  private pathIdSubscription: Subscription;
+  private pathSubscription: Subscription;
   private dialogImage: Subscription;
 
   @Select(state => state.employee.basicEmployeeDtoList)
@@ -82,7 +82,7 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
       sex: [''],
     })
 
-    this.pathIdSubscription = this.acttivatedRoute.params.subscribe(params => {
+    this.pathSubscription = this.acttivatedRoute.params.subscribe(params => {
       this.editEmployeeId = params['id'];
       if (this.editEmployeeId > 0) {
         this.store.dispatch(new GetEmployeeAction(this.editEmployeeId));
@@ -151,9 +151,9 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.pathIdSubscription.unsubscribe();
+    this.pathSubscription.unsubscribe();
     this.employeeSubscription.unsubscribe();
-    this.store.dispatch(new SetEmployeeStateEmployeeAction(null));
+    this.store.dispatch(new SetEmployeeAction(null));
     if (this.dialogImage) {
       this.dialogImage.unsubscribe();
     }

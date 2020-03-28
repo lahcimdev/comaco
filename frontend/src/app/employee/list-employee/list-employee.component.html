@@ -3,7 +3,7 @@
 <ng-container *ngIf="basicEmployeeDtoPage$ | async as basicEmployeeDtoPage">
 
   <mat-form-field style="width: 100%;">
-    <input matInput placeholder="Filter" (keyup)="filterText.next()">
+    <input matInput placeholder="{{ 'create-employee.filter' | translate }}" (keyup)="filterText.next()">
   </mat-form-field>
 
   <table mat-table [dataSource]="basicEmployeeDtoPage.content" matSort (matSortChange)="refreshList()"
@@ -17,7 +17,7 @@
 
     <!-- Photo Column -->
     <ng-container matColumnDef="photo">
-      <th mat-header-cell *matHeaderCellDef>  </th>
+      <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let element">
         <img
           [src]="element.photo ? ('data:image/png;base64,' + element.photo) : ('./../../../assets/images/user_32x32.png')" />

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { LoginAction, GetAuthenticatedUserAction, LogoutAction, UpdateUserStateAction, VerifyTokenAction, RefreshTokenAction, GetAllRolesAction, GetTokenExpirationTimeAction, SetUserStateErrorMessageAction } from './user.actions';
+import { LoginAction, GetAuthenticatedUserAction, LogoutAction, VerifyTokenAction, RefreshTokenAction, GetAllRolesAction, GetTokenExpirationTimeAction, SetErrorMessageAction, SetTokenAction } from './user.actions';
 import { tap, catchError } from 'rxjs/operators';
 import { UserControllerService } from 'src/api/services';
 import { empty } from 'rxjs';
@@ -91,20 +91,26 @@ export class UserState {
 
   @Action(VerifyTokenAction)
   verifyToken(ctx: StateContext<UserStateModel>, { }: VerifyTokenAction) {
-    ctx.patchState({ token: Cookies.get('token') });
-    return this.userService.verifyTokenUsingGET().pipe(
-      tap(() => {
-        ctx.dispatch(new GetAuthenticatedUserAction());
-      }),
-      catchError((error, caught) => {
-        ctx.dispatch(new Navigate(["/login"]))
-        ctx.patchState({ token: null });
-        Cookies.remove('token');
-        console.log('ERROR IN VerifyTokenAction');
-        console.log(error.error);
-        return empty();
-      })
-    )
+    if (Cookies.get('token')) {
+      ctx.patchState({ token: Cookies.get('token') });
+      return this.userService.verifyTokenUsingGET().pipe(
+        tap(() => {
+          ctx.dispatch(new GetAuthenticatedUserAction());
+        }),
+        catchError((error, caught) => {
+          ctx.dispatch(new Navigate(["/login"]))
+          ctx.patchState({ token: null });
+          Cookies.remove('token');
+          console.log('ERROR IN VerifyTokenAction');
+          console.log(error.error);
+          return empty();
+        })
+      )
+    } else {
+      ctx.dispatch(new Navigate(["/login"]))
+      ctx.patchState({ token: null });
+    }
+
   }
 
   @Action(RefreshTokenAction)
@@ -118,15 +124,6 @@ export class UserState {
         return empty();
       })
     )
-  }
-
-  @Action(UpdateUserStateAction)
-  updateUserState(ctx: StateContext<UserStateModel>, { userModel }: UpdateUserStateAction) {
-    ctx.patchState({
-      token: userModel.token ? userModel.token : ctx.getState().token,
-      authenticatedUser: userModel.authenticatedUser ? userModel.authenticatedUser : ctx.getState().authenticatedUser,
-      errorMessage: userModel.errorMessage ? userModel.errorMessage : ctx.getState().errorMessage
-    });
   }
 
   @Action(GetAllRolesAction)
@@ -153,12 +150,16 @@ export class UserState {
   }
 
   // UserStateSetters
-  @Action(SetUserStateErrorMessageAction)
-  setUserStateErrorMessage(ctx: StateContext<UserStateModel>, { errorMessage }: SetUserStateErrorMessageAction) {
-    ctx.patchState({errorMessage: errorMessage});
+  @Action(SetTokenAction)
+  setToken(ctx: StateContext<UserStateModel>, { token }: SetTokenAction) {
+    ctx.patchState({ token: token });
+  }
+  @Action(SetErrorMessageAction)
+  setErrorMessage(ctx: StateContext<UserStateModel>, { errorMessage }: SetErrorMessageAction) {
+    ctx.patchState({ errorMessage: errorMessage });
   }
 
-  
+
 
 
 }

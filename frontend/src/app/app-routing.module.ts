@@ -7,6 +7,7 @@ import { AuthGuard } from './service/auth.guard';
 import { DashboardEmployeeComponent } from './employee/dashboard-employee/dashboard-employee.component';
 import { DashboardCustomerComponent } from './customer/dashboard-customer/dashboard-customer.component';
 import { AuthorizationErrorComponent } from './main/errors/authorization-error/authorization-error.component';
+import { ServerErrorComponent } from './main/errors/server-error/server-error.component';
 
 
 const routes: Routes = [
@@ -42,6 +43,11 @@ const routes: Routes = [
   {
     path: 'authorization-error',
     component: AuthorizationErrorComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'server-error',
+    component: ServerErrorComponent,
     canActivate: [AuthGuard]
   }
 ];

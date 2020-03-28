@@ -8,7 +8,10 @@
         "dashboard": "Dashboard",
         "employeeList": "Employee List",
         "employeeCreate": "Create Employee",
-        "employeeEdit": "Edit Employee"
+        "employeeEdit": "Edit Employee",
+        "customerList": "Customer List",
+        "customerCreate": "Create Customer",
+        "customerEdit": "Edit Customer"
     },
     "login": {
         "title": "LOGIN TO YOUR ACCOUNT",
@@ -52,6 +55,7 @@
         }
     },
     "create-employee": {
+        "filter": "Find employee",
         "photo": {
             "addPhoto": "Add Photo",
             "changePhoto": "Change Photo",

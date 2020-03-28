@@ -9,7 +9,10 @@
         "dashboard": "Pulpit",
         "employeeList": "Lista pracowników",
         "employeeCreate": "Dodaj pracownika",
-        "employeeEdit": "Edytuj pracownika"
+        "employeeEdit": "Edytuj pracownika",
+        "customerList": "Lista klientów",
+        "customerCreate": "Dodaj klienta",
+        "customerEdit": "Edytuj klienta"
     },
 
     "login": {
@@ -54,6 +57,7 @@
         }
     },
     "create-employee": {
+        "filter": "Wyszukaj pracownika",
         "photo": {
             "addPhoto": "Dodaj zdjęcie",
             "changePhoto": "Zmień zdjęcie",
