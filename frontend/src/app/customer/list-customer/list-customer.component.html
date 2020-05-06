@@ -1,0 +1,65 @@
+<p>CUSTOMER LIST</p>
+
+<ng-container *ngIf="basicCustomerDtoPage$ | async as basicCustomerDtoPage">
+
+  <mat-form-field style="width: 100%;">
+    <input matInput placeholder="{{ 'create-edit-customer.filter' | translate }}" (keyup)="filterText.next()">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="basicCustomerDtoPage.content" matSort (matSortChange)="refreshList()"
+    multiTemplateDataRows matSortDisableClear style="width: 100%;">
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'customer.id' | translate }} </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- Photo Column -->
+    <ng-container matColumnDef="photo">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let element">
+        <img [src]="element.photo ? ('data:image/png;base64,' + element.photo) : ('./../../../assets/images/user_32x32.png')" />
+      </td>
+    </ng-container>
+
+    <!-- Company Name Column -->
+    <ng-container matColumnDef="companyName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'customer.companyName' | translate }} </th>
+      <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
+    </ng-container>
+
+    <!-- Company Nip Column -->
+    <ng-container matColumnDef="companyNip">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'customer.companyNip' | translate }} </th>
+      <td mat-cell *matCellDef="let element"> {{element.companyNip}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="button">
+      <th mat-header-cell *matHeaderCellDef> Edit </th>
+      <td mat-cell *matCellDef="let element"> <button mat-button [value]="element.id">Edit</button> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="employeeDetails">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div *ngIf="element.id === expandedSymbol">
+          <p>Details for user {{ element.firstName }}</p>
+          <button mat-button (click)="editCustomer(element.id)">Edytuj</button>
+          <button mat-button (click)="deleteCustomer(element.id)">Usuń</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleExpandableSymbol(row.id)"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['employeeDetails'];"
+      [@expandableRow]="row.id === expandedSymbol ? 'expanded' : 'collapsed'">
+    </tr>
+
+  </table>
+
+  <mat-paginator [pageSize]="basicCustomerDtoPage.size" [pageSizeOptions]="[5, 10, 25, 50, 100]"
+    [length]="basicCustomerDtoPage.totalElements" showFirstLastButtons (page)="refreshList()"></mat-paginator>
+
+</ng-container>

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ActivatedRoute } from '@angular/router';
-import { GetBasicEmployeeDtoListAction, GetAllEmployeeTypesAction, GetEmployeeAction, SetEmployeeAction, UpdateEmployeeAction } from 'src/app/state/employee/employee.actions';
-import { BasicEmployeeDto, Role, Employee, Address } from 'src/api/models';
+import { GetBasicEmployeeDtoListAction, GetAllEmployeeTypesAction, UpdateEmployeeAction, GetEmployeeDtoAction, SetEmployeeDtoAction } from 'src/app/state/employee/employee.actions';
+import { BasicEmployeeDto, Role, Address, EmployeeDto } from 'src/api/models';
 import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Navigate } from '@ngxs/router-plugin';
@@ -50,8 +50,8 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
   @Select(state => state.employee.basicEmployeeDtoList)
   basicEmployeeDtoList$: Observable<Array<BasicEmployeeDto>>;
 
-  @Select(state => state.employee.employee)
-  employee$: Observable<Employee>;
+  @Select(state => state.employee.employeeDto)
+  employeeDto$: Observable<EmployeeDto>;
 
   @Select(state => state.employee.employeeTypes)
   employeeTypes$: Observable<Array<string>>;
@@ -85,10 +85,10 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
     this.pathSubscription = this.acttivatedRoute.params.subscribe(params => {
       this.editEmployeeId = params['id'];
       if (this.editEmployeeId > 0) {
-        this.store.dispatch(new GetEmployeeAction(this.editEmployeeId));
+        this.store.dispatch(new GetEmployeeDtoAction(this.editEmployeeId));
       }
 
-      this.employeeSubscription = this.employee$.subscribe(employee => {
+      this.employeeSubscription = this.employeeDto$.subscribe(employee => {
         if (employee) {
 
           this.employeeListForm.patchValue({
@@ -153,7 +153,7 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.pathSubscription.unsubscribe();
     this.employeeSubscription.unsubscribe();
-    this.store.dispatch(new SetEmployeeAction(null));
+    this.store.dispatch(new SetEmployeeDtoAction(null));
     if (this.dialogImage) {
       this.dialogImage.unsubscribe();
     }
@@ -225,8 +225,8 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
 
   updateEmployee() {
     if (this.verifyEditEmployeeForm()) {
-      let updatedEmployee: Employee;
-      let baseEmployee = this.store.selectSnapshot(EmployeeState.getEmployee);
+      let updatedEmployee: EmployeeDto;
+      let baseEmployee = this.store.selectSnapshot(EmployeeState.getEmployeeDto);
 
       updatedEmployee = {
         id: this.editEmployeeId,
@@ -294,5 +294,5 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  
+
 }

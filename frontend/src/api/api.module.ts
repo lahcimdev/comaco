@@ -3,6 +3,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationInterface } from './api-configuration';
 
+import { CustomerControllerService } from './services/customer-controller.service';
 import { EmployeeControllerService } from './services/employee-controller.service';
 import { UserControllerService } from './services/user-controller.service';
 import { BasicErrorControllerService } from './services/basic-error-controller.service';
@@ -20,6 +21,7 @@ import { BasicErrorControllerService } from './services/basic-error-controller.s
   declarations: [],
   providers: [
     ApiConfiguration,
+    CustomerControllerService,
     EmployeeControllerService,
     UserControllerService,
     BasicErrorControllerService

@@ -67,7 +67,7 @@
             "addAddress": "Dodaj adres",
             "deleteAddress": "Usuń adres"
         },
-        "createEmployee": "Utwórz pracownika",
+        "createEmployee": "Dodaj pracownika",
         "errorMessages": {
             "required": "To pole jest wymagane",
             "email": "Niepoprawny format e-mail",
@@ -79,5 +79,30 @@
     "user-photo": {
         "ok": "Zatwierdź",
         "cancel": "Anuluj"
+    },
+    "customer": {
+        "id": "Id",
+        "username": "E-mail",
+        "password": "Hasło",
+        "password-confirm": "Potwierdź hasło",
+        "companyName": "Nazwa firmy",
+        "companyStreet": "Ulica",
+        "companyPostalCode": "Kod pocztowy",
+        "companyCity": "Miasto",
+        "companyNip": "NIP",
+        "companyRegon": "REGON",
+        "companyContact": {
+            "person": "Osoba kontaktowa",
+            "email": "E-mail",
+            "phone": "Telefon kontaktowy",
+            "description": "Opis"
+        }
+    },
+    "create-edit-customer": {
+        "createCustomer": "Dodaj klienta",
+        "editCustomer": "Edytuj klienta",
+        "addContact": "Dodaj kontakt",
+        "deleteContact": "Usuń kontakt",
+        "filter": "Wyszukaj klienta"
     }
 }

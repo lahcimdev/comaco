@@ -47,6 +47,7 @@ public class AuthenticatedUserDtoMapper {
                     authenticatedUserDto.setUsername(customer.getUsername());
                     authenticatedUserDto.setUserType(customer.getUserType());
                     authenticatedUserDto.setRoles(customer.getRoles());
+                    authenticatedUserDto.setPhoto(userPhotoService.getPhoto(customer.getPhoto(), UserPhotoSize.IMAGE_72x72));
                     return authenticatedUserDto;
                 }).orElseThrow(
                 () -> new EntityNotFoundException("User doesn't exist in database")

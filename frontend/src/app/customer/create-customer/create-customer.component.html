@@ -1,0 +1,204 @@
+<p>CREATE CUSTOMER</p>
+
+<form [formGroup]="customerForm">
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Dane logowania</mat-card-title>
+            <mat-card-subtitle>Podaj dane logowania</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+            <mat-form-field>
+                <input matInput formControlName="username" placeholder="{{ 'customer.username' | translate }}"
+                    type="text" required>
+                <mat-error *ngIf="errorHandlingCustomer('username', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
+                <mat-error *ngIf="errorHandlingCustomer('username', 'email')">
+                    {{ 'create-employee.errorMessages.email' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="password" placeholder="{{ 'customer.password' | translate }}"
+                    type="password" required>
+                <mat-hint align="end">{{customerForm.get('password').value.length}}</mat-hint>
+                <mat-error *ngIf="errorHandlingCustomer('password', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="passwordConfirm"
+                    placeholder="{{ 'customer.password-confirm' | translate }}" type="password" required>
+                <mat-hint align="end">{{customerForm.get('passwordConfirm').value.length}}</mat-hint>
+                <mat-error *ngIf="errorHandlingCustomer('passwordConfirm', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+        </mat-card-content>
+
+    </mat-card>
+    <br />
+    <br />
+    <br />
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Dane firmowe</mat-card-title>
+            <mat-card-subtitle>Podaj dane firmowe</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+            <mat-form-field>
+                <input matInput formControlName="companyName" placeholder="{{ 'customer.companyName' | translate }}"
+                    type="text" required>
+                <mat-error *ngIf="errorHandlingCustomer('companyName', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="companyStreet" placeholder="{{ 'customer.companyStreet' | translate }}"
+                    type="text" required>
+                <mat-error *ngIf="errorHandlingCustomer('companyStreet', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="companyPostalCode"
+                    placeholder="{{ 'customer.companyPostalCode' | translate }}" type="text" required>
+                <mat-error *ngIf="errorHandlingCustomer('companyPostalCode', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="companyCity" placeholder="{{ 'customer.companyCity' | translate }}"
+                    type="text" required>
+                <mat-error *ngIf="errorHandlingCustomer('companyCity', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="companyNip" placeholder="{{ 'customer.companyNip' | translate }}"
+                    type="text" required>
+                <mat-error *ngIf="errorHandlingCustomer('companyNip', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="companyRegon" placeholder="{{ 'customer.companyRegon' | translate }}"
+                    type="text">
+                <mat-error *ngIf="errorHandlingCustomer('companyRegon', 'required')">
+                    {{ 'create-employee.errorMessages.required' | translate }}
+                </mat-error>
+            </mat-form-field>
+        </mat-card-content>
+
+    </mat-card>
+    <br />
+    <br />
+    <br />
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Logotyp firmowy</mat-card-title>
+            <mat-card-subtitle>Dodaj logo swojej firmy</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <img *ngIf="finalImage" width="256px" height="256px" [src]="finalImage" />
+
+            <br />
+
+            <button mat-button (click)="fileInput.click()">
+                <span>{{(finalImage ? 'create-employee.photo.changePhoto': 'create-employee.photo.addPhoto') | translate}}</span>
+                <input #fileInput type="file" (change)="openPhotoFile($event)" style="display:none;" />
+            </button>
+
+            <button *ngIf="finalImage" mat-button
+                (click)="deleteImage()">{{'create-employee.photo.deletePhoto' | translate}}</button>
+        </mat-card-content>
+
+    </mat-card>
+
+</form>
+
+<br />
+<br />
+<br />
+
+
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Dane kontaktowe</mat-card-title>
+        <mat-card-subtitle>Dodaj dane kontaktowe</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+        <button mat-raised-button (click)="addContact()">{{ 'create-edit-customer.addContact' | translate }}</button>
+
+        <button mat-raised-button *ngIf="contactForm.length > 1"
+            (click)="removeContact(selectedTab.value)">{{ 'create-edit-customer.deleteContact' | translate }}</button>
+
+
+        <mat-tab-group [selectedIndex]="selectedTab.value" (selectedIndexChange)="selectedTab.setValue($event)">
+            <mat-tab *ngFor="let contact of contactForm">
+
+                <ng-template mat-tab-label>
+                    <input matInput type="text" value="{{ contact.get('name').value | translate }}" placeholder="Enter the name"
+                        required>
+                </ng-template>
+
+                <form [formGroup]="contactForm[selectedTab.value]">
+
+                    <mat-form-field>
+                        <input matInput formControlName="person"
+                            placeholder="{{ 'customer.companyContact.person' | translate }}" type="text" required>
+                            <mat-error *ngIf="errorHandlingContact(selectedTab.value, 'person', 'required')">
+                                {{ 'create-employee.errorMessages.required' | translate }}
+                            </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput formControlName="email"
+                            placeholder="{{ 'customer.companyContact.email' | translate }}" type="text" required>
+                            <mat-error *ngIf="errorHandlingContact(selectedTab.value, 'email', 'required')">
+                                {{ 'create-employee.errorMessages.required' | translate }}
+                            </mat-error>
+                            <mat-error *ngIf="errorHandlingContact(selectedTab.value, 'email', 'email')">
+                                {{ 'create-employee.errorMessages.email' | translate }}
+                            </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput formControlName="phone"
+                            placeholder="{{ 'customer.companyContact.phone' | translate }}" type="text" required>
+                            <mat-error *ngIf="errorHandlingContact(selectedTab.value, 'person', 'required')">
+                                {{ 'create-employee.errorMessages.required' | translate }}
+                            </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput formControlName="description"
+                            placeholder="{{ 'customer.companyContact.description' | translate }}" type="text">
+                    </mat-form-field>
+
+                </form>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+
+</mat-card>
+<br />
+<br />
+<br />
+
+
+
+<button mat-button (click)="createCustomer()">{{ 'create-edit-customer.createCustomer' | translate }}</button>

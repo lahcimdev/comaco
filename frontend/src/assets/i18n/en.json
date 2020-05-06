@@ -76,5 +76,30 @@
     "user-photo": {
         "ok": "Confirm",
         "cancel": "Cancel"
+    },
+    "customer": {
+        "id": "Id",
+        "username": "E-mail",
+        "password": "Password",
+        "password-confirm": "Confirm password",
+        "companyName": "Company Name",
+        "companyStreet": "Street",
+        "companyPostalCode": "Postal Code",
+        "companyCity": "City",
+        "companyNip": "NIP",
+        "companyRegon": "REGON",
+        "companyContact": {
+            "person": "Contact person",
+            "email": "E-mail",
+            "phone": "Phone number",
+            "description": "Description"
+        }
+    },
+    "create-edit-customer": {
+        "createCustomer": "Create Customer",
+        "editCustomer": "Edit Customer",
+        "addContact": "Add contact",
+        "deleteContact": "Delete contact",
+        "filter": "Find customer"
     }
 }

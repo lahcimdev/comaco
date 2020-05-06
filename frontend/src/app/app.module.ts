@@ -26,6 +26,7 @@ import { AuthorizationErrorComponent } from './main/errors/authorization-error/a
 import { CountdownModule } from 'ngx-countdown';
 import { ErrorInterceptor } from './service/interceptors/error-interceptor';
 import { ServerErrorComponent } from './main/errors/server-error/server-error.component';
+import { CustomerState } from './state/customer/customer.state';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { ServerErrorComponent } from './main/errors/server-error/server-error.co
     CustomerModule,
 
     HttpClientModule,
-    NgxsModule.forRoot([UserState, EmployeeState]),
+    NgxsModule.forRoot([UserState, EmployeeState, CustomerState]),
     NgxsRouterPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     TranslateModule.forRoot({

@@ -10,6 +10,7 @@ import { map as __map, filter as __filter } from 'rxjs/operators';
 import { BasicEmployeeDto } from '../models/basic-employee-dto';
 import { Employee } from '../models/employee';
 import { PageBasicEmployeeDto } from '../models/page-basic-employee-dto';
+import { EmployeeDto } from '../models/employee-dto';
 
 /**
  * Employee Controller
@@ -23,8 +24,8 @@ class EmployeeControllerService extends __BaseService {
   static readonly getBasicEmployeeDtoPageUsingGETPath = '/api/employee/page';
   static readonly getAllEmployeeTypesUsingGETPath = '/api/employee/types';
   static readonly updateEmployeeUsingPUTPath = '/api/employee/update';
-  static readonly getEmployeeUsingGETPath = '/api/employee/{id}';
-  static readonly updateEmployeePhotoUsingPOSTPath = '/api/employee/{id}/photo';
+  static readonly getEmployeeDtoUsingGETPath = '/api/employee/{id}';
+  static readonly updateEmployeePhotoUsingPUTPath = '/api/employee/{id}/photo';
 
   constructor(
     config: __Configuration,
@@ -198,14 +199,14 @@ class EmployeeControllerService extends __BaseService {
   }
 
   /**
-   * @param employee employee
+   * @param employeeDto employeeDto
    * @return OK
    */
-  updateEmployeeUsingPUTResponse(employee: Employee): __Observable<__StrictHttpResponse<Employee>> {
+  updateEmployeeUsingPUTResponse(employeeDto: EmployeeDto): __Observable<__StrictHttpResponse<Employee>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = employee;
+    __body = employeeDto;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/employee/update`,
@@ -224,11 +225,11 @@ class EmployeeControllerService extends __BaseService {
     );
   }
   /**
-   * @param employee employee
+   * @param employeeDto employeeDto
    * @return OK
    */
-  updateEmployeeUsingPUT(employee: Employee): __Observable<Employee> {
-    return this.updateEmployeeUsingPUTResponse(employee).pipe(
+  updateEmployeeUsingPUT(employeeDto: EmployeeDto): __Observable<Employee> {
+    return this.updateEmployeeUsingPUTResponse(employeeDto).pipe(
       __map(_r => _r.body as Employee)
     );
   }
@@ -237,7 +238,7 @@ class EmployeeControllerService extends __BaseService {
    * @param id id
    * @return OK
    */
-  getEmployeeUsingGETResponse(id: number): __Observable<__StrictHttpResponse<Employee>> {
+  getEmployeeDtoUsingGETResponse(id: number): __Observable<__StrictHttpResponse<EmployeeDto>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -255,7 +256,7 @@ class EmployeeControllerService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Employee>;
+        return _r as __StrictHttpResponse<EmployeeDto>;
       })
     );
   }
@@ -263,27 +264,27 @@ class EmployeeControllerService extends __BaseService {
    * @param id id
    * @return OK
    */
-  getEmployeeUsingGET(id: number): __Observable<Employee> {
-    return this.getEmployeeUsingGETResponse(id).pipe(
-      __map(_r => _r.body as Employee)
+  getEmployeeDtoUsingGET(id: number): __Observable<EmployeeDto> {
+    return this.getEmployeeDtoUsingGETResponse(id).pipe(
+      __map(_r => _r.body as EmployeeDto)
     );
   }
 
   /**
-   * @param params The `EmployeeControllerService.UpdateEmployeePhotoUsingPOSTParams` containing the following parameters:
+   * @param params The `EmployeeControllerService.UpdateEmployeePhotoUsingPUTParams` containing the following parameters:
    *
    * - `id`: id
    *
    * - `employeePhoto`: employeePhoto
    */
-  updateEmployeePhotoUsingPOSTResponse(params: EmployeeControllerService.UpdateEmployeePhotoUsingPOSTParams): __Observable<__StrictHttpResponse<null>> {
+  updateEmployeePhotoUsingPUTResponse(params: EmployeeControllerService.UpdateEmployeePhotoUsingPUTParams): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
     __body = params.employeePhoto;
     let req = new HttpRequest<any>(
-      'POST',
+      'PUT',
       this.rootUrl + `/api/employee/${params.id}/photo`,
       __body,
       {
@@ -300,14 +301,14 @@ class EmployeeControllerService extends __BaseService {
     );
   }
   /**
-   * @param params The `EmployeeControllerService.UpdateEmployeePhotoUsingPOSTParams` containing the following parameters:
+   * @param params The `EmployeeControllerService.UpdateEmployeePhotoUsingPUTParams` containing the following parameters:
    *
    * - `id`: id
    *
    * - `employeePhoto`: employeePhoto
    */
-  updateEmployeePhotoUsingPOST(params: EmployeeControllerService.UpdateEmployeePhotoUsingPOSTParams): __Observable<null> {
-    return this.updateEmployeePhotoUsingPOSTResponse(params).pipe(
+  updateEmployeePhotoUsingPUT(params: EmployeeControllerService.UpdateEmployeePhotoUsingPUTParams): __Observable<null> {
+    return this.updateEmployeePhotoUsingPUTResponse(params).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -347,9 +348,9 @@ module EmployeeControllerService {
   }
 
   /**
-   * Parameters for updateEmployeePhotoUsingPOST
+   * Parameters for updateEmployeePhotoUsingPUT
    */
-  export interface UpdateEmployeePhotoUsingPOSTParams {
+  export interface UpdateEmployeePhotoUsingPUTParams {
 
     /**
      * id

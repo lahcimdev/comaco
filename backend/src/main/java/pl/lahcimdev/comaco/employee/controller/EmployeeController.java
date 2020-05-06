@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.lahcimdev.comaco.dto.basicemployee.BasicEmployeeDto;
+import pl.lahcimdev.comaco.dto.employee.EmployeeDto;
 import pl.lahcimdev.comaco.employee.domain.Employee;
 import pl.lahcimdev.comaco.employee.domain.EmployeeType;
 import pl.lahcimdev.comaco.employee.service.EmployeeService;
@@ -30,20 +31,20 @@ public class EmployeeController {
         return employeeService.createEmployee(employee);
     }
 
-    @PostMapping("/{id}/photo")
+    @PutMapping("/{id}/photo")
     public void updateEmployeePhoto(@PathVariable Long id, @RequestBody String employeePhoto) {
         employeeService.updateEmployeePhoto(id, employeePhoto);
     }
 
     @PutMapping("/update")
-    public Employee updateEmployee(@RequestBody Employee employee) {
-        return employeeService.updateEmployee(employee);
+    public Employee updateEmployee(@RequestBody EmployeeDto employeeDto) {
+        return employeeService.updateEmployeeDto(employeeDto);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    public Employee getEmployee(@PathVariable Long id) {
-        return employeeService.getEmployee(id);
+    public EmployeeDto getEmployeeDto(@PathVariable Long id) {
+        return employeeService.getEmployeeDto(id);
     }
 
     @PreAuthorize("isAuthenticated()")

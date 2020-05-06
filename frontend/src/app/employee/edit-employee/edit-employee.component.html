@@ -3,7 +3,8 @@
     <form [formGroup]="employeeListForm">
         <mat-select formControlName="basicEmployeeDto" (selectionChange)="changeEmployee($event.value)">
             <mat-option *ngFor="let basicEmployeeDto of basicEmployeeDtoList" [value]="basicEmployeeDto.id">
-                <img [src]="basicEmployeeDto.photo ? ('data:image/png;base64,' + basicEmployeeDto.photo) : ('./../../../assets/images/user_32x32.png')" />
+                <img
+                    [src]="basicEmployeeDto.photo ? ('data:image/png;base64,' + basicEmployeeDto.photo) : ('./../../../assets/images/user_32x32.png')" />
                 <span>{{basicEmployeeDto.firstName + '  '}}</span>
                 <span>{{basicEmployeeDto.lastName + '     '}}</span>
                 <span>{{basicEmployeeDto.employeeType}}</span>
@@ -12,7 +13,8 @@
     </form>
 </mat-form-field>
 
-<div *ngIf="employee$ | async as employee">
+
+<div *ngIf="employeeDto$ | async as employee">
 
 
     <mat-card>
@@ -77,15 +79,15 @@
             <img width="256px" height="256px"
                 [src]="employeePhoto ? (employeePhoto) : ('./../../../assets/images/user_256x256.png')" />
 
-                <br />
+            <br />
 
-        <button mat-button (click)="fileInput.click()">
-            <span>{{(employeePhoto ? 'create-employee.photo.changePhoto': 'create-employee.photo.addPhoto') | translate}}</span>
-            <input #fileInput type="file" (change)="openPhotoFile($event)" style="display:none;" />
-        </button>
+            <button mat-button (click)="fileInput.click()">
+                <span>{{(employeePhoto ? 'create-employee.photo.changePhoto': 'create-employee.photo.addPhoto') | translate}}</span>
+                <input #fileInput type="file" (change)="openPhotoFile($event)" style="display:none;" />
+            </button>
 
-        <button *ngIf="employeePhoto" mat-button
-            (click)="deletePhoto()">{{'create-employee.photo.deletePhoto' | translate}}</button>
+            <button *ngIf="employeePhoto" mat-button
+                (click)="deletePhoto()">{{'create-employee.photo.deletePhoto' | translate}}</button>
 
         </mat-card-content>
     </mat-card>
@@ -104,33 +106,33 @@
                 <mat-form-field>
                     <input matInput formControlName="firstName" placeholder="{{ 'employee.firstName' | translate }}"
                         type="text" required>
-                        <mat-error *ngIf="errorHandlingEmployee('firstName', 'required')">
-                            {{ 'create-employee.errorMessages.required' | translate }}
-                        </mat-error>
+                    <mat-error *ngIf="errorHandlingEmployee('firstName', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
                     <input matInput formControlName="lastName" placeholder="{{ 'employee.lastName' | translate }}"
                         type="text" required>
-                        <mat-error *ngIf="errorHandlingEmployee('lastName', 'required')">
-                            {{ 'create-employee.errorMessages.required' | translate }}
-                        </mat-error>
+                    <mat-error *ngIf="errorHandlingEmployee('lastName', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
                     <input matInput formControlName="email" placeholder="{{ 'employee.email' | translate }}" type="text"
                         required>
-                        <mat-error *ngIf="errorHandlingEmployee('email', 'required')">
-                            {{ 'create-employee.errorMessages.required' | translate }}
-                        </mat-error>
+                    <mat-error *ngIf="errorHandlingEmployee('email', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
                     <input matInput formControlName="phone" placeholder="{{ 'employee.phone' | translate }}" type="text"
                         required>
-                        <mat-error *ngIf="errorHandlingEmployee('phone', 'required')">
-                            {{ 'create-employee.errorMessages.required' | translate }}
-                        </mat-error>
+                    <mat-error *ngIf="errorHandlingEmployee('phone', 'required')">
+                        {{ 'create-employee.errorMessages.required' | translate }}
+                    </mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-select formControlName="sex" placeholder="{{ 'employee.sex' | translate }}">
@@ -179,25 +181,25 @@
                         <mat-form-field>
                             <input matInput formControlName="street"
                                 placeholder="{{ 'employee.address.street' | translate }}" type="text" required>
-                                <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'street', 'required')">
-                                    {{ 'create-employee.errorMessages.required' | translate }}
-                                </mat-error>
+                            <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'street', 'required')">
+                                {{ 'create-employee.errorMessages.required' | translate }}
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
                             <input matInput formControlName="city"
                                 placeholder="{{ 'employee.address.city' | translate }}" type="text" required>
-                                <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'city', 'required')">
-                                    {{ 'create-employee.errorMessages.required' | translate }}
-                                </mat-error>
+                            <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'city', 'required')">
+                                {{ 'create-employee.errorMessages.required' | translate }}
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
                             <input matInput formControlName="postalCode"
                                 placeholder="{{ 'employee.address.postalCode' | translate }}" type="text" required>
-                                <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'postalCode', 'required')">
-                                    {{ 'create-employee.errorMessages.required' | translate }}
-                                </mat-error>
+                            <mat-error *ngIf="errorHandlingAddress(selectedTab.value, 'postalCode', 'required')">
+                                {{ 'create-employee.errorMessages.required' | translate }}
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
@@ -213,10 +215,7 @@
     </mat-card>
 
     <br />
-    <br />
 
     <button mat-button (click)="updateEmployee()">Update Employee</button>
 
-
 </div>
-

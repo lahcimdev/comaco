@@ -1,34 +1,34 @@
 import { BasicEmployeeDto } from './../../../api/models/basic-employee-dto';
-import { PageBasicEmployeeDto, Employee } from 'src/api/models';
+import { PageBasicEmployeeDto, Employee, EmployeeDto } from 'src/api/models';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { GetBasicEmployeeDtoPageAction, GetAllEmployeeTypesAction, CreateEmployeeAction, UpdateEmployeePhotoAction, GetBasicEmployeeDtoListAction, GetEmployeeAction, SetEmployeeAction, UpdateEmployeeAction, DeleteEmployeeAction, SetBasicEmployeeDtoPageAction } from './employee.actions';
+import { GetBasicEmployeeDtoPageAction, GetAllEmployeeTypesAction, CreateEmployeeAction, UpdateEmployeePhotoAction, GetBasicEmployeeDtoListAction, UpdateEmployeeAction, DeleteEmployeeAction, SetBasicEmployeeDtoPageAction, DeleteEmployeeAndUpdateBasicEmployeeDtoPageAction, GetEmployeeDtoAction, SetEmployeeDtoAction } from './employee.actions';
 import { EmployeeControllerService, UserControllerService } from 'src/api/services';
 import { tap } from 'rxjs/operators';
 
 export class EmployeeStateModel {
 
+  public employeeDto: EmployeeDto;
   public employeeTypes;
   public basicEmployeeDtoList: Array<BasicEmployeeDto>;
   public basicEmployeeDtoPage: PageBasicEmployeeDto;
-  public employee: Employee;
 
 }
 
 @State<EmployeeStateModel>({
   name: 'employee',
   defaults: {
+    employeeDto: null,
     employeeTypes: null,
     basicEmployeeDtoList: null,
-    basicEmployeeDtoPage: null,
-    employee: null
+    basicEmployeeDtoPage: null
   }
 })
 
 export class EmployeeState {
 
   @Selector()
-  static getEmployee(employeeStateModel: EmployeeStateModel) {
-    return employeeStateModel.employee;
+  static getEmployeeDto(employeeStateModel: EmployeeStateModel) {
+    return employeeStateModel.employeeDto;
   }
 
   constructor(private employeeService: EmployeeControllerService, private userService: UserControllerService) { }
@@ -51,11 +51,11 @@ export class EmployeeState {
     );
   }
 
-  @Action(GetEmployeeAction)
-  getEmployee(ctx: StateContext<EmployeeStateModel>, { id }: GetEmployeeAction) {
-    return this.employeeService.getEmployeeUsingGET(id).pipe(
-      tap(employee => {
-        ctx.patchState({ employee: employee })
+  @Action(GetEmployeeDtoAction)
+  getEmployeeDto(ctx: StateContext<EmployeeStateModel>, { id }: GetEmployeeDtoAction) {
+    return this.employeeService.getEmployeeDtoUsingGET(id).pipe(
+      tap(employeeDto => {
+        ctx.patchState({ employeeDto: employeeDto })
       })
     )
   }
@@ -82,8 +82,8 @@ export class EmployeeState {
   }
 
   @Action(UpdateEmployeeAction)
-  updateEmployee(ctx: StateContext<EmployeeStateModel>, { employee, employeePhoto }: UpdateEmployeeAction) {
-    return this.employeeService.updateEmployeeUsingPUT(employee).pipe(
+  updateEmployee(ctx: StateContext<EmployeeStateModel>, { employeeDto, employeePhoto }: UpdateEmployeeAction) {
+    return this.employeeService.updateEmployeeUsingPUT(employeeDto).pipe(
       tap(employee => {
         console.log("Zaktualizowano Employee o ID: " + employee.id);
         if (employeePhoto) {
@@ -96,7 +96,7 @@ export class EmployeeState {
 
   @Action(UpdateEmployeePhotoAction)
   updateEmployeePhoto(ctx: StateContext<EmployeeStateModel>, { employeeId, employeePhoto }: UpdateEmployeePhotoAction) {
-    return this.employeeService.updateEmployeePhotoUsingPOST({ id: employeeId, employeePhoto }).pipe(
+    return this.employeeService.updateEmployeePhotoUsingPUT({ id: employeeId, employeePhoto }).pipe(
       tap(() => console.log("Poprawnie dokonane aktualizacji PhotoEmployee"))
     );
   }
@@ -111,11 +111,22 @@ export class EmployeeState {
     );
   }
 
+  @Action(DeleteEmployeeAndUpdateBasicEmployeeDtoPageAction)
+  deleteEmployeeAndUpdateBasicEmployeeDtoPage(ctx: StateContext<EmployeeStateModel>, { employeeId, page, size, sort, properties, filter }: DeleteEmployeeAndUpdateBasicEmployeeDtoPageAction) {
+    return this.userService.deleteUserUsingDELETE(employeeId).pipe(
+      tap(() => {
+        ctx.dispatch(new GetBasicEmployeeDtoPageAction(page, size, sort, properties, filter));
+      }
+      )
+    );
+    
+  }
+
 
   // EmployeeStateSetters
-  @Action(SetEmployeeAction)
-  setEmployeeStateEmployee(ctx: StateContext<EmployeeStateModel>, { employee }: SetEmployeeAction) {
-    ctx.patchState({ employee: employee });
+  @Action(SetEmployeeDtoAction)
+  setEmployeeDtoStateEmployee(ctx: StateContext<EmployeeStateModel>, { employeeDto }: SetEmployeeDtoAction) {
+    ctx.patchState({ employeeDto: employeeDto });
   }
   @Action(SetBasicEmployeeDtoPageAction)
   setBasicEmployeeDtoPage(ctx: StateContext<EmployeeStateModel>, { basicEmployeeDtoPage }: SetBasicEmployeeDtoPageAction) {

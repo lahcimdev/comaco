@@ -1,4 +1,4 @@
-import { SetBasicEmployeeDtoPageAction } from './../../state/employee/employee.actions';
+import { SetBasicEmployeeDtoPageAction, DeleteEmployeeAndUpdateBasicEmployeeDtoPageAction } from './../../state/employee/employee.actions';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -66,7 +66,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   }
 
   deleteEmployee(id: number) {
-    this.store.dispatch(new DeleteEmployeeAction(id));
+    this.store.dispatch(new DeleteEmployeeAndUpdateBasicEmployeeDtoPageAction(id, this.matPaginator.pageIndex, this.matPaginator.pageSize, this.matSort.direction == 'desc' ? 'DESC' : 'ASC', Array.of(this.matSort.active), this.filter.value));
   }
 
 

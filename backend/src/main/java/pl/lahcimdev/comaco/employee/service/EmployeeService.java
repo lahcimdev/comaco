@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.lahcimdev.comaco.dto.basicemployee.BasicEmployeeDto;
 import pl.lahcimdev.comaco.dto.basicemployee.BasicEmployeeDtoMapper;
+import pl.lahcimdev.comaco.dto.employee.EmployeeDto;
+import pl.lahcimdev.comaco.dto.employee.EmployeeDtoMapper;
 import pl.lahcimdev.comaco.employee.domain.Employee;
 import pl.lahcimdev.comaco.employee.repository.EmployeeRepository;
 import pl.lahcimdev.comaco.service.UserPhotoService;
@@ -23,13 +25,15 @@ public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
     private PasswordEncoder passwordEncoder;
+    private EmployeeDtoMapper employeeDtoMapper;
     private BasicEmployeeDtoMapper basicEmployeeDtoMapper;
     private UserPhotoService userPhotoService;
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder, BasicEmployeeDtoMapper basicEmployeeDtoMapper, UserPhotoService userPhotoService) {
+    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder, EmployeeDtoMapper employeeDtoMapper, BasicEmployeeDtoMapper basicEmployeeDtoMapper, UserPhotoService userPhotoService) {
         this.employeeRepository = employeeRepository;
         this.passwordEncoder = passwordEncoder;
+        this.employeeDtoMapper = employeeDtoMapper;
         this.basicEmployeeDtoMapper = basicEmployeeDtoMapper;
         this.userPhotoService = userPhotoService;
     }
@@ -39,9 +43,8 @@ public class EmployeeService {
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         employee.setUserType(UserType.EMPLOYEE);
         Employee employeeTemp = employeeRepository.save(employee);
-        employeeTemp.getAddress().stream().forEach(address -> {
-            address.setEmployee(employeeTemp);
-        });
+        employeeTemp.getAddress().stream()
+                .forEach(address -> address.setEmployee(employeeTemp));
         return employeeTemp;
     }
 
@@ -71,22 +74,13 @@ public class EmployeeService {
 
     }
 
-    public Employee getEmployee(Long id) {
+    public EmployeeDto getEmployeeDto(Long id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User doesn't exist in database"));
-        employee.setPassword(null);
-        employee.setPhoto(userPhotoService.getPhoto(employee.getPhoto(), UserPhotoSize.IMAGE_256x256));
-        return employee;
+        return employeeDtoMapper.mapEmployeeToEmployeeDto(employee);
     }
 
-    public Employee updateEmployee(Employee employee) {
-        Employee employeeDb = employeeRepository.findById(employee.getId())
-                .orElseThrow(() -> new EntityNotFoundException("User doesn't exist in database"));
-        employee.setPassword(employeeDb.getPassword());
-        employee.setUserType(employeeDb.getUserType());
-        employee.setCreatedDate(employeeDb.getCreatedDate());
-        employee.setCreatedBy(employeeDb.getCreatedBy());
-        employee.setPhoto(employeeDb.getPhoto());
-        return employeeRepository.save(employee);
+    public Employee updateEmployeeDto(EmployeeDto employeeDto) {
+        return employeeRepository.save(employeeDtoMapper.mapEmployeeDtoToEmployee(employeeDto));
     }
 }

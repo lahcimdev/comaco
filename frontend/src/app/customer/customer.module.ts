@@ -6,6 +6,10 @@ import { AccountCustomerComponent } from './account-customer/account-customer.co
 import { DashboardCustomerComponent } from './dashboard-customer/dashboard-customer.component';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { CreateCustomerComponent } from './create-customer/create-customer.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ListCustomerComponent } from './list-customer/list-customer.component';
+import { EditCustomerComponent } from './edit-customer/edit-customer.component';
 
 
 
@@ -13,13 +17,18 @@ import { TranslateModule } from '@ngx-translate/core';
   declarations: [
     NavigationCustomerComponent,
     AccountCustomerComponent,
-    DashboardCustomerComponent
+    DashboardCustomerComponent,
+    CreateCustomerComponent,
+    ListCustomerComponent,
+    EditCustomerComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     RouterModule,
-    TranslateModule
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [NavigationCustomerComponent],
 })

@@ -157,13 +157,12 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy {
   }
 
   createEmployee() {
-    let employeePhoto: string = null;
-
-    if (this.finalImage) {
-      employeePhoto = this.finalImage.split('base64')[1];
-    }
-
     if (this.verifyCreateForm()) {
+
+      let employeePhoto: string = null;
+      if (this.finalImage) {
+        employeePhoto = this.finalImage.split('base64')[1];
+      }
       this.store.dispatch(new CreateEmployeeAction({
         username: this.employeeForm.get('username').value,
         password: this.employeeForm.get('password').value,

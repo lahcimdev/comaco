@@ -1,5 +1,11 @@
 <p>CUSTOMER</p>
 
+<ng-container *ngIf="authenticatedUser$ | async as authenticatedUser">
+    <p>{{ authenticatedUser.username }}</p>
+        <img [src]="authenticatedUser.photo ? ('data:image/png;base64,' + authenticatedUser.photo) : ('./../../../assets/images/user_72x72.png')"
+            height="72px" width="72px" style="border-radius: 50%;" />
+    </ng-container>
+
 <mat-nav-list>
     <a mat-list-item routerLink="dashboard-customer">
         <mat-icon>add_circle_outline</mat-icon> {{ 'navigation.dashboard' | translate }}

@@ -38,7 +38,7 @@ public class UserService {
         UserType userType = userRepository.findByUsername(username)
                 .map(user -> user.getUserType())
                 .orElseThrow(
-                        () -> new EntityNotFoundException("User doesn't exist in database")
+                        () -> new EntityNotFoundException("User doesn't exist in database or doesnt' have UserType")
                 );
         if (userType == UserType.EMPLOYEE) {
             return authenticatedUserDtoMapper.mapEmployeeToAuthenticatedUserDto(username);

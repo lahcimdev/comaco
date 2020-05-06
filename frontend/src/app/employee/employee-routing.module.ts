@@ -5,6 +5,9 @@ import { EmployeeListComponent } from './list-employee/list-employee.component';
 import { RolesGuard } from '../service/roles.guard';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
+import { CreateCustomerComponent } from '../customer/create-customer/create-customer.component';
+import { ListCustomerComponent } from '../customer/list-customer/list-customer.component';
+import { EditCustomerComponent } from '../customer/edit-customer/edit-customer.component';
 
 
 const routes: Routes = [
@@ -29,7 +32,28 @@ const routes: Routes = [
     path: 'edit-employee/:id',
     component: EditEmployeeComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'create-customer',
+    component: CreateCustomerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'list-customer',
+    component: ListCustomerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'edit-customer',
+    component: EditCustomerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'edit-customer/:id',
+    component: EditCustomerComponent,
+    canActivate: [AuthGuard],
   }
+  
 ];
 
 @NgModule({

@@ -26,7 +26,7 @@ public class Employee extends User {
     private LocalDate birthDate;
     @Enumerated(EnumType.STRING)
     private Sex sex;
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @JsonManagedReference
     @Size(min = 1)
     private List<Address> address;

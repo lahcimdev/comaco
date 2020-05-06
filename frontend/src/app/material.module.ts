@@ -13,7 +13,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card'; 
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatAutocompleteModule } from '@angular/material';
 
 const MaterialComponents = [
   MatInputModule,
@@ -30,7 +30,8 @@ const MaterialComponents = [
   MatCardModule,
   MatSelectModule,
   MatTabsModule,
-  MatDialogModule
+  MatDialogModule,
+  MatAutocompleteModule
 ]
 
 @NgModule({
