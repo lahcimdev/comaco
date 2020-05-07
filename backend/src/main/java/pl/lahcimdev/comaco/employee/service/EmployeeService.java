@@ -2,6 +2,7 @@ package pl.lahcimdev.comaco.employee.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,12 @@ import pl.lahcimdev.comaco.dto.employee.EmployeeDtoMapper;
 import pl.lahcimdev.comaco.employee.domain.Employee;
 import pl.lahcimdev.comaco.employee.repository.EmployeeRepository;
 import pl.lahcimdev.comaco.service.UserPhotoService;
-import pl.lahcimdev.comaco.service.UserPhotoSize;
 import pl.lahcimdev.comaco.user.domain.UserType;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,9 +63,10 @@ public class EmployeeService {
     }
 
     public Page<BasicEmployeeDto> getBasicEmployeeDtoPage(Pageable pageable, String filter) {
-        return employeeRepository.findAllByLastNameContainingOrFirstNameContaining(pageable, filter, filter).map(employee ->
-                basicEmployeeDtoMapper.mapEmployeeToBaseEmployeeDto(employee)
-        );
+        return employeeRepository.findAllByLastNameContainingOrFirstNameContaining(pageable, filter, filter)
+                .map(employee ->
+                        basicEmployeeDtoMapper.mapEmployeeToBaseEmployeeDto(employee)
+                );
     }
 
     public List<BasicEmployeeDto> getBasicEmployeeDtoList() {
